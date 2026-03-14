@@ -1,0 +1,24 @@
+Here is flow.
+
+1. Create Job Listing/Job Descrption. (JD is generated). This JD will be the reference number for the entire flow.
+2. List in the Job sites. Initally, we will list in our Native site, which will be visible in the Static page. Create a Job Lisitng in the Static page to show all jobs.
+3. Candidates would have applied for Jobs. Resume Screening will happen next. Admin or Recruiter will select candidates based on Match(AI will match comparing Resume and Job Description). We need to create a table (Let us call it as "Candidate Table") to maintain the candidates list. This  table will be updated as we move up in the process. This table will have
+For each Job/JD
+	a.Candidates Name
+	b.Resume link (Resume can be in PDF or Word Fromat)
+	c.Resume AI Match(% out of 100)
+	d.Resume Recruiter Match(% fo 100)
+	d.Email
+	e.Phone number
+	e1.Location
+	f.Application date and Time
+	g.Interview schedule  Date and Time (Candidate will select the data and time. We need to send a interview notification to the selected candaites)
+	h.Interview Link. (Auto Generated to link with hidden information about  Job Descrption, candidate, job title, psotition etc. AI Interview module will generate question based on these crriteria) 
+	i.Interview Status(Completed/Sceduled/Cancelled)
+	j.Interview Outcomde(Cleared/Rejected/OnHold)
+	k.Candidates Percentage Interview score (out of 100)
+	l. Notificatio sent (Y/N)
+	m. Notifcation Date
+4. In the Interview Evalation, Once candidate select date and time that information will be updated in the Candidate table. Interview can start + or - 10 minute before the scheduled time.  AI Interview module will generate the questions, get the answeres, store the answere in a Interview Summary and Interview Detail Tables. Update the Candidate Table with the results. We need to connect the Interview table and Candidate table for cross reference and details. 
+5. Candidate Ranking will the ranking of the candiate for aparticualt Job desciption from the Candidate PErcentage Interview Score. From the list REcruiter will selected the candidated who are slected. This data has to be updated to the Candidate Table.
+6. Notification will be sent. 

@@ -1,0 +1,19 @@
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/api/auth/user:1  Failed to load resource: the server responded with a status of 401 (Unauthorized)Understand this error
+ WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/?token=A5fGStRHgUP9' failed: 
+setupWebSocket @ client:536Understand this error
+1d26367f-c149-43bc-8…ev/@vite/client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=A5fGStRHgUP9' is invalid.Understand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/api/auth/user:1  Failed to load resource: the server responded with a status of 401 (Unauthorized)Understand this error
+ WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/?token=A5fGStRHgUP9' failed: 
+setupWebSocket @ client:536Understand this error
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=A5fGStRHgUP9' is invalid.Understand this error
+stallwart.build.js:1 stallwart: failed ping 1
+stallwart.build.js:1 stallwart: failed ping 2
+client:536 WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/?token=A5fGStRHgUP9' failed: 
+setupWebSocket @ client:536Understand this error
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=A5fGStRHgUP9' is invalid.Understand this error
+client:536 WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/?token=A5fGStRHgUP9' failed: 
+setupWebSocket @ client:536Understand this error
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=A5fGStRHgUP9' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)

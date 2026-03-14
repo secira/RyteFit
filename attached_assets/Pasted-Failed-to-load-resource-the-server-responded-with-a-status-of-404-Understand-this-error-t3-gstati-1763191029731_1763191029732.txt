@@ -1,0 +1,27 @@
+Failed to load resource: the server responded with a status of 404 ()Understand this error
+t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar1lr%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+ WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/?token=-RlvdVlQBmgS' failed: 
+setupWebSocket @ client:536Understand this error
+ WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/?token=-RlvdVlQBmgS' failed: 
+setupWebSocket @ client:536Understand this error
+client:536 WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/?token=WuZvx74wqgD6' failed: 
+setupWebSocket @ client:536Understand this error
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=WuZvx74wqgD6' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)Understand this error
+injected.js:27 WebSocket connected

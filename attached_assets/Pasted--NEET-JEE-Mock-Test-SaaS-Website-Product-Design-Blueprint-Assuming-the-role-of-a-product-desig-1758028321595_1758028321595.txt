@@ -1,0 +1,417 @@
+
+NEET & JEE Mock Test SaaS Website – Product Design Blueprint
+Assuming the role of a product designer, here is a comprehensive structure for a responsive, SaaS-based NEET/JEE mock test platform that delivers rich test-taking experiences, performance analytics, national benchmarking, and AI-powered doubt clearing—ready for commercialization.
+
+1. Core Website Structure
+Landing Page
+•	Bold “Start Your Test” CTA, demo video, highlights of features (question bank, AI support, analytics). Keep the landing page very simple like Google. 
+•	Info on NEET & IIT pathways, benefits of mock tests, sample dashboards.
+Student Registration/Login
+•	Email/OAuth/OTP quick signup.
+•	Personalized dashboard on login: recent tests, analytics, leaderboards, doubt support.
+ 
+2. Question Bank System
+•	Subjects:
+o	JEE Main: Physics, Chemistry, Maths
+o	NEET: Physics, Chemistry, Biology
+•	Sections/Chapters: Each subject subdivided (e.g., “Organic Chemistry,” “Electrostatics,” “Human Physiology”).
+•	Question Attributes:
+o	Section/Chapter
+o	Difficulty Level (1–5, 5=Most Difficult)
+o	Flag if appeared in previous year paper (Year/Exam Tag)
+o	Correct answer, detailed solution
+
+•	Admin Panel:
+o	Create/import questions (CSV upload)
+o	Tag by difficulty, section, previous year appearance
+ 
+3. Test Creation & Student Flow
+•	Stepwise Wizard:
+a.	Choose Exam: NEET/JEE
+b.	Select Difficulty Level
+c.	Provide User to take test 180 minutes
+d.	Based on the timing selected dynamically prepare the mock test
+
+•	Responsive Test UI:
+a.	Timer, progress bar, mark-for-review
+b.	Navigation by question/section
+c.	Completion triggers score/analytics panel
+•	Full Exams Timing for NEET
+Duration: 3 hours (180 minutes)
+Questions and Pattern: 
+Total Questions: 180 compulsory MCQs
+Subjects: Physics (45), Chemistry (45), and Biology (90)
+Question Type: Multiple Choice Questions (MCQs)
+Marking Scheme: 
+Correct Answer: +4 marks
+Incorrect Answer: -1 mark
+Unanswered Question: 0 marks
+
+Subject-Wise Weightage  for NEET
+•	Biology: 360 Marks (50% weightage)
+o	Botany: 45 Questions
+o	Zoology: 45 Questions
+•	Chemistry: 180 Marks (25% weightage)
+o	45 Questions
+•	Physics: 180 Marks (25% weightage)
+o	45 Questions
+NEET - Physics Chapter Wise Weightage 
+
+Physics Chapters and Topics	Average Number of Questions 	Weightage (%)
+Centre of Mass (Chapter – System of Particles and Rotational Motion)
+1	1%
+Gravitation
+2	3%
+Kinematics (Chapters – Motion in a straight line, Motion in a Plane)	1	2%
+Laws of Motion
+3	7%
+Mechanical Properties of Solids & Fluids	2	3%
+Oscillations
+(Oscillations and Waves)
+1	3%
+Rotational motion (Chapter – System of Particles and Rotational Motion)	1	1%
+Motion of System of Particles and Rigid Body	3	7%
+Units and Measurement
+1	2%
+Oscillations and Waves
+2	4%
+Work, Energy and Power
+2	4%
+Kinetic Theory
+(Kinetic Theory of Gases)
+1	2%
+Properties of Bulk Matter	1	3%
+Thermal Properties of Matter
+1	2%
+Thermodynamics
+3	7%
+Magnetic Effects of Current & Magnetism
+3	6%
+Electric Charges & Fields
+1	2%
+Electromagnetic Waves
+1	1%
+Electrostatic Potential & Capacitance
+1	2%
+Electrostatics
+1	3%
+Alternating Current
+1	3%
+Current Electricity
+3	6%
+Electromagnetic Induction
+1	2%
+Semiconductor Electronics: Materials, Devices and Simple Circuits	3	6%
+Atoms & Nuclei
+2	5%
+Dual Nature of Matter and Radiation
+2	4%
+Ray Optics & Optical Instrument
+(Optics)
+3	5%
+Wave optics
+2	4%
+
+NEET- Chemistry Chapter Wise Weightage 
+
+Chemistry Chapters and Topics	Average Number of Questions 	Average
+Weightage
+(%)
+Inorganic Chemistry-I	22%
+Chemical Bonding
+(Chemical Bonding and Molecular Structure)
+4	8%
+p-block
+3	6%
+Periodic Table & Periodicity in Properties
+(Periodic Table)
+2	4%
+Hydrogen
+(Hydrogen and Its Compounds)
+1	2%
+s-block
+1	2%
+Inorganic Chemistry-II	12%
+Coordination Compounds
+2	5%
+d-block & f-block Elements
+2	3%
+Metallurgy
+1	2%
+Qualitative Analysis
+1	2%
+Organic Chemistry-I	7%
+General Organic Chemistry and 
+Practical Organic Chemistry
+2	4%
+Hydrocarbons 
+2	3%
+Organic Chemistry-II	27%
+Aromatic Compounds
+3	6%
+Haloalkane, 
+Alkyl Halide, 
+Alcohol & Ether
+2	3%
+Biomolecules, 
+Polymer
+2	3%
+Carbonyl Compounds
+2	3%
+IUPAC and 
+Isomerism
+2	3%
+Aldehydes, 
+Ketones and 
+Carboxylic Acids
+2	3%
+Organic Compounds containing nitrogen
+2	3%
+Chemistry in Everyday Life and
+Environmental chemistry 
+2	3%
+Physical Chemistry-I	17%
+Mole Concept
+2	5%
+Ionic Equilibrium
+2	4%
+Atomic Structure &
+  Nuclear Chemistry
+1	2%
+Chemical Equilibrium and
+Gaseous State	1	2%
+Thermodynamics and Thermochemistry
+1	2% 
+Redox Reactions
+1	2%
+Physical Chemistry-II	15%
+Chemical Kinetics
+2	4%
+Liquid Solution & Colligative Properties
+2	4%
+Electrochemistry
+1	3%
+Solid State
+1	2%
+Surface Chemistry
+1	2%
+
+
+
+NEET- Biology Chapter Wise Weightage 
+Biology Chapters and Topics	Average Number of Questions 	Weightage
+(%)
+Botany
+Genetics and Evolution
+15	25%
+Ecology and Environment
+10	16%
+Plant Physiology
+8	14%
+Plant Diversity	7	12%
+Cell Structure and Function
+6	10%
+Plant Reproduction
+(Reproduction)
+5	9%
+Morphology of Flowering Plants
+4	7%
+Plant Anatomy	2	4%
+Biomolecule	2	3%
+Total	100%
+Zoology
+Human Physiology
+13	45% 
+Human Reproduction & Reproductive Health	5	16%
+Animal Kingdom
+3	10%
+Origin & Evolution
+3	10%
+Human Health & Diseases
+3	9%
+ 
+Structural Organization in Animals	2	5%
+Animal husbandry	1	3%
+Biology and Human Welfare
+1	2%
+Total	100%
+
+
+
+•	Full Exams Timing for JEE Main
+The JEE Main exam pattern for Paper 1 (B.E./B.Tech) includes 75 questions in total, divided into 25 questions each from Physics, Chemistry, and Mathematics. For each subject, there are 20 Multiple Choice Questions (MCQs) in Section A and 5 Numerical Value Questions (NVQs) in Section B. The exam is conducted in a computer-based online mode, lasts for 3 hours, and the total marks are 300.  
+Paper 1 (B.E./B.Tech) Structure 
+•	Mode: Computer-Based Test (Online)
+•	Duration: 3 hours
+•	Subjects: Physics, Chemistry, and Mathematics
+•	Total Questions: 75 questions
+•	Total Marks: 300 marks
+Subject-wise Breakdown
+•	Section A: 
+20 Multiple Choice Questions (MCQs) from each subject (Physics, Chemistry, Mathematics). All 20 MCQs in each section are compulsory to attempt. 
+•	Section B: 
+5 Numerical Value Questions (NVQs) from each subject (Physics, Chemistry, Mathematics). Candidates must attempt all 5 NVQs in each subject. 
+Marking Scheme 
+•	Correct Answer: +4 marks
+•	Incorrect Answer: -1 mark for MCQs and NVQs
+•	Unanswered Question: 0 marks
+
+
+JEE Main- Overall Subject Weightage 
+Mathematics: 35%
+Physics: 22.50%
+Chemistry: 22.50%
+
+JEE Main Chapter-wise Weightage Maths
+Below are the chapters, total questions, and weightage from each chapter of the Mathematics paper. Students must know that the chapter-wise weightage is prepared based on JEE Main previous year question papers by analyzing the topics and questions that had been asked in past years.
+Chapters	Total Questions	Weightage
+Sets
+1	3.3%
+Permutations & Combinations	1	3.3%
+Probability	1	3.3%
+Complex Numbers	1	3.3%
+Binominal Theorem
+1	3.3%
+Limits	1	3.3%
+Differentiability
+1	3.3%
+Indefinite Integration	1	3.3%
+Definite Integration	1	3.3%
+Differential Equations
+1	3.3%
+Height & Distance	1	3.3%
+Trigonometric Equations	1	3.3%
+The Area under the Curve	1	3.3%
+Quadratic Equations 	1	3.3%
+Vectors
+1	3.3%
+Tangents and Normals	1	3.3%
+Maxima and Minima	1	3.3%
+Statistics	1	3.3%
+Parabola	1	3.3%
+Ellipse	1	3.3%
+Hyperbola	1	3.3%
+Sequences & Series	2	6.6%
+Straight Lines 	2	6.6%
+3-D Geometry 	2	6.6%
+Determinants 
+2	6.6%
+
+JEE Main Chapter wise Weightage Physics
+Below are the chapters, total questions, and weightage from each chapter of the Physics paper. Candidates can check below the topics and number of questions that had been asked in the previous year in JEE Main exams. 
+Chapters	Total Questions	Weightage
+Electrostatics
+1	3.3%
+Capacitors 
+1	 3.3%
+Simple Harmonic Motion
+1	 3.3%
+Sound Waves	1	 3.3%
+Elasticity	1	 3.3%
+Error in Measurement	1	 3.3%
+Circular Motion	1	 3.3%
+Electromagnetic Waves
+1	 3.3%
+Semiconductors
+1	 3.3%
+Magnetic Effect of Current and Magnetism
+ 2	6.6%
+Alternating Current
+ 2	6.6%
+Kinetic Theory of Gases & Thermodynamics
+ 2	6.6%
+Kinematics	 2	6.6%
+Work, Energy, and Power
+ 2	6.6%
+Laws of Motion
+ 2	6.6%
+Centre Of Mass	 2	6.6%
+Rotational Dynamics	 2	6.6%
+Modern Physics	 2	6.6%
+Wave Optics
+ 2	6.6%
+Current Electricity
+3	9.9%
+Chapter-wise Weightage of Chemistry in JEE Main 2026
+Below are the chapters, total questions, and weightage from each chapter of the Chemistry paper. The chapter-wise weightage had been analyzed based on JEE Main past year papers in Chemistry questions. 
+Chapters	Total Questions	Weightage
+Mole Concept	1	3.3%
+Redox Reactions 
+1	3.3%
+Electrochemistry 	1	3.3%
+Chemical Kinetics 
+1	3.3%
+Solution & Colligative Properties 	1	3.3%
+General Organic Chemistry 	1	3.3%
+Stereochemistry 	1	3.3%
+Hydrocarbon 
+1	3.3%
+Alkyl Halides 	1	3.3%
+Carboxylic Acids & their Derivatives 	1	3.3%
+Carbohydrates, Amino-Acids, and Polymers 	1	3.3%
+Aromatic Compounds 	1	3.3%
+Atomic Structure
+2	6.6%
+Chemical Bonding
+2	6.6%
+Chemical And Ionic Equilibrium
+2	6.6%
+Solid-State And Surface Chemistry	2	6.6%
+Nuclear & Environmental Chemistry	2	6.6%
+Thermodynamics & the Gaseous State	2	6.6%
+Transition Elements & Coordination Compounds	3	 9.9%
+Periodic table	3	9.9%
+•	All India Exam:
+Twice a year we will conduct an All India Exam where students from all over year will login and take the test at a given time. This will be Sample exam just before the Real Exam Conducted by the Government. 
+a.	Choose Exam: NEET/JEE
+b.	Duration:
+	NEET – 180 Minutes (all subjects)
+	JEE – 180 Minutes (all Subject)
+c.	Simultaneous Login – Estimated to have 10000 student’s login
+d.	It will be scheduled for a particular date and time and all students registered will be taking at the same time. It has to be a synchronized test so user cannot logout and login. Timer will continue for 180 minute and stop. 
+e.	Fees – 500 INR per Exams
+f.	Leadership Board – All India Ranking. First 10 Ranks will be rewarded. 
+g.	Question Bank – Question bank for these exams will be separate so that Students can have tougher pattern. Admin will prepare these questions with the help of Education Experts.
+h.	Test-wise scores, subject precision, chapter-wise breakdown
+i.	National Benchmarking: Mean score and standard deviation compared to all platform users nationally
+j.	Graphs: performance trend, accuracy by difficulty, strengths/weaknesses
+k.	National, state, school, and peer group rankings
+l.	Badge system for top performers
+
+4. Performance Dashboard for all tests
+•	Metrics:
+o	Test-wise scores, subject precision, chapter-wise breakdown
+o	National Benchmarking: Mean score and standard deviation compared to all platform users nationally
+o	Graphs: performance trend, accuracy by difficulty, strengths/weaknesses
+•	Leaderboards:
+o	National, state, school, and peer group rankings
+o	Badge system for top performers
+ 
+5. AI-Powered Doubt Clearance Module
+•	Ask a Doubt:
+o	Students type a question, select subject (PCM for JEE, PCB for NEET)
+o	AI parses and answers within seconds, referencing the question bank and external resources
+o	Option to escalate to subject experts for complex questions
+•	History & Follow-Up:
+o	Track resolved and pending doubts in dashboard
+ 
+6. Monetization Model
+Suggested Pricing Tiers
+•	Freemium Model
+o	Free: Allow one Sample Test.
+•	Standard Plan for NEET
+o	Payment: ₹ 995
+o	No of Tests: 5
+o	Once they take five test they can add extra tests for ₹200 per test.
+•	Standard Plan for JEE
+o	Payment: ₹ 995
+o	No of Tests: 5
+o	Once they take five test they can add extra tests for ₹200 per test.
+•	Doubt Clearing will be free for all.
+•	National Level Test which are conducted twice a year will be extra.
+ 
+7. Accessibility & User Experience
+•	Mobile-first layouts, one-tap navigation, large touch targets
+•	High-contrast, font scalability, multilingual (Hindi/English)
+•	Accessible summary of score analytics and doubt solutions
+•	Push/email notifications for test schedules, leaderboard updates, doubt response

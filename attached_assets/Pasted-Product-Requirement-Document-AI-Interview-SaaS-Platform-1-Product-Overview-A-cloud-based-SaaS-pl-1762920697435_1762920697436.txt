@@ -1,0 +1,76 @@
+Product Requirement Document: AI Interview SaaS Platform
+1. Product Overview
+A cloud-based SaaS platform to automate and optimize candidate screening and interviews using AI. This system enables recruiters to post jobs, collect and rank applications, interview candidates using AI voice/text bots, and manage the entire hiring workflow through a unified dashboard.
+ 
+2. User Roles
+•	Company Admin: Manages platform, users, settings, and reporting.
+•	Recruiter: Creates jobs, manages postings, screens and interviews candidates.
+•	Candidate: Applies for jobs, participates in AI interviews.
+ 
+3. Functional Requirements & Workflow
+Step 1: Company Admin / Recruiter Login & Job Creation
+•	Secure login (multi-factor authentication)
+•	Create/edit job requirements: title, description, location, domain, mandatory/optional skills, experience, salary, interview mode (voice/text/video)
+•	Save and manage job templates
+Step 2: Job Posting & Distribution
+•	Publish job to site job listing board
+•	Option to post to selected external job boards via API/integration (e.g. LinkedIn, Naukri)
+•	Manage active/inactive jobs
+Step 3: Resume Collection
+•	Candidate portal for job application uploads (PDF/DOC/JSON)
+•	Integration with external job sites to fetch and sync resumes
+•	Auto-collection of candidate contact info
+Step 4: Resume Screening
+•	AI-based resume parser extracts skills, experience, education and other attributes
+•	Automated matching of resume attributes against job requirements
+Step 5: Resume Ranking
+•	AI algorithm ranks resumes by fit/match score
+•	Display ranked candidate list with configurable filters/sorting
+Step 6: Candidate Contact & Interview Scheduling
+•	In-app/email/SMS notification to shortlisted candidates
+•	Calendar integration for scheduling AI interview slots
+•	Option for manual override (set interviewers, timings)
+Step 7: AI Interviews
+•	Automated chatbot conducts structured interviews (voice or text)
+•	Video recording interface for voice interviews (browser-based, anti-cheat features)
+•	Store and secure interview evidence (audio/text/video files)
+•	Interview transcripts generated and stored
+Step 8: Selection & Shortlist
+•	Recruiter/company admin selects top X candidates (customizable per job/role)
+•	Option to compare interview transcripts, scores, and resume side-by-side
+Step 9: Summary & Detail Report Generation
+•	Automated summary report for each candidate: match score, interview transcript, AI insights (sentiment, keyword analysis, behavioral signals)
+•	Downloadable detailed reports (PDF, CSV) for panel reviews
+Step 10: Email Results to Candidates
+•	Automated result notifications for all candidates
+•	Customized messaging templates for successful/rejected/status update outcomes
+ 
+4. Dashboard & Admin Features
+•	Central dashboard for all active jobs, candidate status, analytics, and recent activities
+•	Filters for job status, candidate stage, date range, recruiter, and job posting channels
+•	Performance analytics: time to fill, candidate drop-off, interview conversion rate
+•	Access logs and role-based permissions management
+ 
+5. Non-Functional Requirements
+•	Responsive UI/UX (web/mobile tablets)
+•	Secure data handling (GDPR, SOC2 compliance)
+•	Robust audit logging and anti-cheat for interviews
+•	API support for integrations with third-party job sites and calendar providers
+•	Scalable cloud deployment (AWS, Azure, GCP)
+•	Modular backend: microservices for resume parsing, AI scoring, video interview, notification
+ 
+6. Assumptions & Constraints
+•	Job board and calendar integrations depend on external API access and terms
+•	AI models may require periodic fine-tuning for different industries
+•	Video/audio recordings stored as encrypted files with retention policies
+ 
+7. Reporting & Documentation
+•	Automated system and candidate reports
+•	User manual, onboarding guides, API documentation
+ 
+8. Key Deliverables
+•	Product specification & wireframes for each workflow step
+•	UI mockups (Company Dashboard, Job Posting, Candidate List, AI Interview, Reports)
+•	API documentation for job board/event integrations
+•	Security and compliance checklist
+ 

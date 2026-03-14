@@ -1,0 +1,40 @@
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+ WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/?token=9BgblC6cJvYi' failed: 
+setupWebSocket @ client:536Understand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+ WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/?token=CoTpx3bEwa8S' failed: 
+setupWebSocket @ client:536Understand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+interview-evaluations.tsx:225  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+ WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/?token=Qd1WGTB0UpvK' failed: 
+setupWebSocket @ client:536Understand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+ WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/?token=dg1Ps7kErKDh' failed: 
+setupWebSocket @ client:536Understand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+client:536 WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/?token=MwGefeeTMbld' failed: 
+setupWebSocket @ client:536Understand this error
+injected.js:37 [vite] server connection lost. Polling for restart...
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+attached_assets/image_1763829955112.png:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUT

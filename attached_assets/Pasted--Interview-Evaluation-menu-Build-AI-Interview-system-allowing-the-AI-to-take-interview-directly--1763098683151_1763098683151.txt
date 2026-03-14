@@ -1,0 +1,47 @@
+
+Interview Evaluation menu. 
+Build AI Interview system allowing the AI to take interview directly for the Candidate. Once the Candidate login and start the interview, there will be few pleseantalries. Then the AI will start the interview process. AI will check the Job description created for the job, compare it with the Resume and decide the flow of the interview. Question be configured based on hte Candidate Experince (Fresher, Junior, Senior or Expert), the job title and department.  AI will generate questions based on Generate AI and Companies Question bank. Each company will have their own Question bank. The Interview will text based and the Candiate will answere back in text. An Interview Transction table has to be defied and details like, date and time, candidates name, phone, interview details at the question level, the response, AI review for each question, Summary of total questions asked, correct answere, overall rank out of 10 will be stored for future access. During the interview Video will be switched on and capture candiates movements for fraud etc. These video clips will also be stored for future reference. The link of th e video will be stored in the interview transaction table. 
+Suggested techonolgy
+✅ LangGraph - Can orchestrate dynamic question flows
+✅ OpenAI integration - Can use Whisper (speech-to-text) and TTS (text-to-speech)
+✅ WebSocket library - For real-time bidirectional communication
+✅ Object Storage - For storing video recordings
+✅ PostgreSQL - For tracking interview sessions and results
+
+WebRTC or video service integration (Twilio Video, Agora, Daily.co, etc.)
+Speech-to-Text (OpenAI Whisper API)
+Text-to-Speech (OpenAI TTS API)
+WebSocket implementation for real-time communication
+Video recording/playback components
+Interview session management (new DB tables)
+Architectural Flow:
+Student → Video/Audio Stream → WebRTC/WebSocket 
+       → Speech-to-Text → LangGraph AI Agent 
+       → Dynamic Question Generation → Text-to-Speech 
+       → Audio/Video Response → Student
+
+✅ Completed (Tasks 1-3):
+1. Database Schema
+
+interview_sessions: Tracks each interview session with exam type, subject, status, duration, and scores
+interview_messages: Stores conversation history between AI and student
+interview_evaluations: Stores detailed evaluation results with performance metrics
+2. WebSocket Server
+Real-time bidirectional communication channel at /ws/interview
+Ready for live audio/video streaming and AI responses
+3. Backend API Routes
+All routes are protected with authentication:
+
+POST /api/interviews - Create new interview session
+GET /api/interviews - Get user's interview history
+GET /api/interviews/:id - Get specific session details
+PATCH /api/interviews/:id - Update session status
+GET /api/interviews/:id/messages - Get interview conversation
+GET /api/interviews/:id/evaluation - Get results and scores
+📋 Remaining Tasks (4-9):
+OpenAI Whisper - Speech-to-text for student responses
+OpenAI TTS - Text-to-speech for AI questions
+LangGraph Agent - Dynamic interview flow with intelligent questioning
+Frontend Interface - Video capture, real-time communication UI
+Recording Storage - Save interview videos to object storage
+Analytics Dashboard - Performance metrics and insights

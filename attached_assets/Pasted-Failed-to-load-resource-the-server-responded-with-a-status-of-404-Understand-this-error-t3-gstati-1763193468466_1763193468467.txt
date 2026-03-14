@@ -1,0 +1,28 @@
+Failed to load resource: the server responded with a status of 404 ()Understand this error
+t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+ingest.app.coframe.com/ingest/v2/batched_events/68c9ad4d4cddb58cf3a1f93d/:1  Failed to load resource: net::ERR_NETWORK_IO_SUSPENDEDUnderstand this error
+d3ebe8d1cbd1d969.js:2 WebSocket connection to 'wss://eval.picard.platform.replit.com/wsv2/v2.public.Q2dZSTV2SGZ5QVlTQmdpRmp1RElCaUlHY0dsallYSmtNQUE2NlFFS0pERmtNall6TmpkbUxXTXhORGt0TkROaVl5MDRZMkV6TFRneU5qSmxNekJtWldNNVloSURibWw0R2hoeVpYQnNhWFF0Y21Wd2JDMW1hV3hsY3kxd2FXTmhjbVFpQzBsdWRHVnlkbWxsZDBGSktnWjFaR0Y1YVdSQ1ZBb1pjbVZ3YkdsMExYSmxjR3d0WW14dlkydHpMWEJwWTJGeVpCSVhjbVZ3YkdsMExYSmxjR3d0YldWMFlTMXdhV05oY21RYUhuSmxjR3hwZEMxdFlYSm5ZWEpwYm1VdFlteHZZMnR6TFhCcFkyRnlaRW9IQ09xMW54QVFBVkFBV2hsdmJtSnZZWEprYVc1blgyVjRjR1Z5YVdWdVkyVmZiRzkzV2c5cGJuUmxiblJmWW5WemFXNW...U015VXlRa2xEYW01aU5FRjFPV3hsU0ZCU1dWQTNUMjVtVTNsRWNqVk1RV3haSlRKQ2RHaFlNa1ZuVFhGeVJXMDJjR0ZHYTB4R2NFbHNVRkp0UmtaalVrcHFSV3RtUlhaYWQwVnpUMlZRTVROd1JHTk1WWGxKUXpOS2JYWjRja2wzTWxCNWFXZzRVVVJyUjAxb2VsQktjVUZTYkhsSWNFVndOamhsZEVZbE1rWnlha2RMUmt4VlRUUXlRaVV5Um5CT1oxbGpUMUZGYzJWNVNXSlpaV016U1d3M1JtWkJOeVV5UmxBM09WbFZRU1V5UmtaNE5sSTFNMFo1UWtwbFptRnRRMHN3ZDJWb1pqUlhlRU5wZFhSQ00zY2xNMFFsTTBRPdgcc7otTmv7T_O3WhBWPKMBKaiJo7SFCB-vIiezYEdqczhxRxPJaEC8vePJpcTFL07FI23kxy8FzYD_DrDPVw4.Q2dad2NtOWtPak1pQ25KbGNHeHBkQzVqYjIwPQ' failed: 
+(anonymous) @ d3ebe8d1cbd1d969.js:2Understand this error
+b1ec363d21f5bd76.js:2 Uncaught (in promise) Understand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'battery'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1pg%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+ WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/?token=hYHdGa6asLfb' failed: 
+setupWebSocket @ client:536Understand this error
+client:536 WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/?token=hYHdGa6asLfb' failed: 
+setupWebSocket @ client:536Understand this error
+client:536 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=hYHdGa6asLfb' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)

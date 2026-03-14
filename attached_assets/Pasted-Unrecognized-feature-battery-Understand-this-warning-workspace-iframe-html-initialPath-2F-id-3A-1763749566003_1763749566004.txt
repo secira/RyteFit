@@ -1,0 +1,25 @@
+Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar3ml%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+client:536 WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/?token=InCg4m2cv_3a' failed: 
+setupWebSocket @ client:536Understand this error
+injected.js:37 [vite] server connection lost. Polling for restart...
+injected.js:37 Starting interview for applicationId: 12539827-f4e9-479a-a8ad-6fe36b324e4f
+injected.js:37 WebSocket connected
+injected.js:37 Interview session initialized
+injected.js:37 WebSocket disconnected
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+injected.js:37 Starting interview for applicationId: b914a98f-853e-45e4-b031-66737f129136
+injected.js:37 WebSocket connected
+injected.js:37 Interview session initialized
+stallwart.build.js:1 stallwart: failed ping 1

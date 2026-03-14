@@ -1,0 +1,24 @@
+Cannot read properties of undefined (reading 'split')
+The above error occurred in the <AITutorPage> component:
+
+    at AITutorPage (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/src/pages/ai-tutor.tsx:30:35)
+    at main
+    at div
+    at div
+    at div
+    at Provider (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=2b25d5eb:38:15)
+    at TooltipProvider (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=2b25d5eb:62:5)
+    at SidebarProvider (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/src/components/ui/sidebar.tsx:59:3)
+    at ProtectedRoute (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/src/App.tsx?v=4Tlt6j1SdwvvAuvAOXMul:71:38)
+    at component
+    at Route (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=2b25d5eb:323:16)
+    at Switch (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=2b25d5eb:379:17)
+    at AppRouter
+    at Provider (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=2b25d5eb:38:15)
+    at TooltipProvider (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=2b25d5eb:62:5)
+    at QueryClientProvider (https://dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=2b25d5eb:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+Cannot read properties of undefined (reading 'split')

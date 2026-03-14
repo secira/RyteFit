@@ -1,0 +1,14 @@
+ailed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/api/interview-evaluations/754d1f0b-063b-494c-9fcc-5cb3aa2da0d5:1  Failed to load resource: the server responded with a status of 404 (Not Found)Understand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/api/applications/undefined/interview-video:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+client:536 WebSocket connection to 'wss://1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/?token=cYU-iX3COEua' failed: 
+setupWebSocket @ client:536Understand this error
+injected.js:37 [vite] server connection lost. Polling for restart...
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev/api/interview-evaluations/754d1f0b-063b-494c-9fcc-5cb3aa2da0d5:1  Failed to load resource: the server responded with a status of 404 (Not Found)Understand this error
+1d26367f-c149-43bc-8ca3-8262e30fec9b-00-hrp7reb2jcck.picard.replit.dev:24678/:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+stallwart.build.js:1 stallwart: failed ping 1

@@ -1,0 +1,17 @@
+dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/dashboard:1 Refused to load the script 'https://replit.com/public/js/replit-dev-banner.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+Understand this error
+workspace_iframe.html?initialPath=%2F&id=%3Ar2e5%3A:142 Refused to load the script 'https://replit.com/public/js/beacon.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+onIframeLoad @ workspace_iframe.html?initialPath=%2F&id=%3Ar2e5%3A:142Understand this error
+dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/dashboard:1 Refused to load the script 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+Understand this error
+dacacf2e-05b1-4038-92b9-12f629dd663e-00-3qr0twpxuaof4.riker.replit.dev/dashboard:1 Refused to load the script 'https://replit.com/public/js/replit-dev-banner.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+Understand this error
+workspace_iframe.html?initialPath=%2F&id=%3Ar2e5%3A:142 Refused to load the script 'https://replit.com/public/js/beacon.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+onIframeLoad @ workspace_iframe.html?initialPath=%2F&id=%3Ar2e5%3A:142Understand this error
+analytics.tiktok.com/i18n/pixel/events.js?sdkid=D004GE3C77U8PIVDSDJG&lib=ttq:1  Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+45_app-9b3d7a5da68f2d8c.js:13 If you do not provide children, you must specify an aria-label for accessibility
+(anonymous) @ _app-9b3d7a5da68f2d8c.js:13Understand this warning
+analytics.tiktok.com/i18n/pixel/events.js?sdkid=D004GE3C77U8PIVDSDJG&lib=ttq:1  Failed to load resource: net::ERR_CERT_AUTHORITY_INVALIDUnderstand this error
+stallwart.build.js:1 stallwart: failed ping 1
