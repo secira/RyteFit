@@ -15,6 +15,7 @@ import { randomUUID } from "crypto";
 import { DEFAULT_SCORING_WEIGHTS, DEFAULT_SCORING_WEIGHTS_SUM } from "@shared/constants/scoring";
 import fs from "fs";
 import path from "path";
+import { uploadVideo, getVideoMeta, getVideoStreamUrl, streamLocalVideo, streamS3Video, IS_PROD } from "./fileStorage";
 
 // ==================== REGISTER ROUTES ====================
 
@@ -3164,14 +3165,16 @@ Return ONLY a valid JSON object with the following structure:
       const metadata = (session.metadata as any) || {};
       const videoPath = session.videoPath;
       
-      // Check if video file exists on disk
+      // Check if video exists (local or S3)
       let hasVideo = false;
+      let videoUrl: string | null = null;
       
       if (videoPath) {
-        const absoluteVideoPath = path.resolve(process.cwd(), videoPath);
-        if (fs.existsSync(absoluteVideoPath)) {
-          hasVideo = true;
-          console.log('[VIDEO-FETCH] Video available at:', videoPath);
+        const meta = await getVideoMeta(videoPath);
+        hasVideo = meta.exists;
+        if (hasVideo) {
+          console.log(`[VIDEO-FETCH] Video available (${meta.isS3 ? 'S3' : 'local'}):`, videoPath);
+          videoUrl = await getVideoStreamUrl(videoPath, applicationId);
         }
       }
 
@@ -3180,9 +3183,9 @@ Return ONLY a valid JSON object with the following structure:
         status: session.status,
         completedAt: session.completedAt,
         hasVideo: hasVideo,
-        videoFileName: videoPath ? path.basename(videoPath) : null,
+        videoFileName: videoPath ? path.basename(videoPath.replace('s3:', '')) : null,
         videoUploadedAt: session.completedAt,
-        videoUrl: hasVideo ? `/api/applications/${applicationId}/interview-video/stream` : null,
+        videoUrl,
         answers: metadata.answers || [],
       });
     } catch (error: any) {
@@ -3212,38 +3215,17 @@ Return ONLY a valid JSON object with the following structure:
         return res.status(404).json({ message: "No video available" });
       }
 
-      const absoluteVideoPath = path.resolve(process.cwd(), videoPath);
-      
-      if (!fs.existsSync(absoluteVideoPath)) {
-        return res.status(404).json({ message: "Video file not found" });
+      // In PROD mode, S3 paths are served via pre-signed URLs (redirect)
+      // In TEST mode, stream directly from local disk
+      if (videoPath.startsWith("s3:")) {
+        const signedUrl = await getVideoStreamUrl(videoPath, applicationId as string);
+        if (!signedUrl) {
+          return res.status(404).json({ message: "Video not accessible" });
+        }
+        return res.redirect(302, signedUrl);
       }
 
-      const stat = fs.statSync(absoluteVideoPath);
-      const fileSize = stat.size;
-      const range = req.headers.range;
-
-      if (range) {
-        // Handle range requests for video seeking
-        const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10);
-        const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-        const chunksize = (end - start) + 1;
-        const file = fs.createReadStream(absoluteVideoPath, { start, end });
-        
-        res.writeHead(206, {
-          'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-          'Accept-Ranges': 'bytes',
-          'Content-Length': chunksize,
-          'Content-Type': 'video/webm',
-        });
-        file.pipe(res);
-      } else {
-        res.writeHead(200, {
-          'Content-Length': fileSize,
-          'Content-Type': 'video/webm',
-        });
-        fs.createReadStream(absoluteVideoPath).pipe(res);
-      }
+      streamLocalVideo(videoPath, req.headers.range, res);
     } catch (error: any) {
       console.error("Error streaming interview video:", error);
       res.status(500).json({ message: "Failed to stream interview video" });
@@ -4494,30 +4476,23 @@ Ensure coverage percentage is at least 60%. If not possible, generate additional
         answersCount: answers?.length || 0,
       });
 
-      // Store video to file system if provided
+      // Store video (locally in TEST mode, S3 in PROD mode)
       let videoUrls: string[] = [];
       let videoPath: string | null = null;
       if (videoBlob) {
         try {
-          console.log('[INTERVIEW-SUBMIT] Saving video to file system...');
-          
-          // Ensure video directory exists with absolute path
-          const videoDir = path.resolve(process.cwd(), 'uploads', 'videos');
-          await fs.promises.mkdir(videoDir, { recursive: true });
+          console.log(`[INTERVIEW-SUBMIT] Saving video (APP_ENV=${process.env.APP_ENV || 'TEST'})...`);
           
           const videoFileName = `interview-video-${sessionId}-${Date.now()}.webm`;
-          const absoluteVideoPath = path.join(videoDir, videoFileName);
-          videoPath = `uploads/videos/${videoFileName}`; // Store relative path in DB
+          const videoBuffer = Buffer.from(videoBlob, 'base64');
+          
+          const result = await uploadVideo(videoBuffer, videoFileName);
+          videoPath = result.path;
           videoUrls = [videoFileName];
           
-          // Convert base64 to buffer and save to file
-          const videoBuffer = Buffer.from(videoBlob, 'base64');
-          await fs.promises.writeFile(absoluteVideoPath, videoBuffer);
-          
-          console.log('[INTERVIEW-SUBMIT] Video saved:', absoluteVideoPath, `(${Math.round(videoBuffer.length / 1024 / 1024 * 100) / 100} MB)`);
+          console.log(`[INTERVIEW-SUBMIT] Video saved (${result.isS3 ? 'S3' : 'local'}): ${videoPath} (${Math.round(videoBuffer.length / 1024 / 1024 * 100) / 100} MB)`);
         } catch (uploadError: any) {
           console.error('[INTERVIEW-SUBMIT] Error saving video:', uploadError);
-          // Continue without video if save fails
           videoPath = null;
         }
       }
@@ -4823,15 +4798,19 @@ Score objectively based on answer quality, relevance, depth, and communication. 
         return res.status(404).json({ message: "Invalid interview link" });
       }
 
-      // Check if video file exists in file system
+      // Check if video file exists (local or S3)
       const videoPath = matchingSession.videoPath;
       if (videoPath) {
-        const absoluteVideoPath = path.resolve(process.cwd(), videoPath);
-        if (fs.existsSync(absoluteVideoPath)) {
-          res.set('Content-Type', 'video/webm');
-          res.set('Content-Disposition', `inline; filename="${fileName}"`);
-          const videoStream = fs.createReadStream(absoluteVideoPath);
-          return videoStream.pipe(res);
+        const meta = await getVideoMeta(videoPath);
+        if (meta.exists) {
+          if (videoPath.startsWith("s3:")) {
+            const signedUrl = await getVideoStreamUrl(videoPath, "");
+            if (signedUrl) return res.redirect(302, signedUrl);
+          } else {
+            res.set('Content-Type', 'video/webm');
+            res.set('Content-Disposition', `inline; filename="${fileName}"`);
+            return fs.createReadStream(meta.localPath!).pipe(res);
+          }
         }
       }
 
@@ -4862,11 +4841,12 @@ Score objectively based on answer quality, relevance, depth, and communication. 
     }
   });
 
-  // Serve uploaded videos directory with resolved absolute path
-  const videoDir = path.resolve(process.cwd(), 'uploads', 'videos');
-  // Ensure directory exists for static serving
-  fs.mkdirSync(videoDir, { recursive: true });
-  app.use('/uploads/videos', express.static(videoDir));
+  // Serve uploaded videos directory (TEST/local mode only)
+  if (!IS_PROD) {
+    const videoDir = path.resolve(process.cwd(), 'uploads', 'videos');
+    fs.mkdirSync(videoDir, { recursive: true });
+    app.use('/uploads/videos', express.static(videoDir));
+  }
 
   // Get interview session with video info
   app.get('/api/public/interview/:token/video-info', async (req, res) => {

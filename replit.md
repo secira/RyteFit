@@ -26,6 +26,7 @@ The platform features a corporate design system with a blue/gray palette, light/
 - **Interview Simulation:** Allows candidates to practice the AI interview process before applying, without saving data to applications or evaluations.
 - **PWA Support:** Progressive Web App with offline caching, background sync, and installable app experience. Service worker uses cache-first strategy for static assets and network-first for API calls.
 - **Mobile Backend API:** JWT-based authentication for mobile apps with device registration, push notification subscriptions, and mobile-friendly dashboard endpoints. Access tokens expire after 15 minutes, refresh tokens after 7 days.
+- **Dual File Storage:** Controlled by the `APP_ENV` environment variable. When `APP_ENV=TEST`, interview video recordings are saved to the local `uploads/videos/` directory. When `APP_ENV=PROD`, videos are uploaded to AWS S3 (requires `AWS_S3_BUCKET`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` secrets). S3 videos are served via 1-hour pre-signed URLs. The storage logic lives in `server/fileStorage.ts`.
 
 **System Design Choices:**
 - **B2B Product Only:** Access is restricted to Company Admins and Recruiters; all candidate-facing login/signup functionalities are blocked.

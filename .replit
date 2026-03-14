@@ -56,3 +56,9 @@ defaultBucketID = "replit-objstore-c52a1599-6421-4cf3-aad6-8eadd1919298"
 
 [userenv.shared]
 APP_DOMAIN = "https://rytefit.com"
+
+[userenv.development]
+APP_ENV = "TEST"
+
+[userenv.production]
+APP_ENV = "PROD"
