@@ -50,6 +50,7 @@ const ApplicantsDetailPage = lazy(() => import("./pages/applicants-detail"));
 const InterviewEvaluationsPage = lazy(() => import("./pages/interview-evaluations"));
 const CandidateRankingPage = lazy(() => import("./pages/candidate-ranking"));
 const HowItWorksPage = lazy(() => import("./pages/how-it-works"));
+const FeaturesPage = lazy(() => import("./pages/features"));
 const InterviewEvaluationPage = lazy(() => import("./pages/interview-evaluation"));
 const CareersPage = lazy(() => import("./pages/careers"));
 const ResumesPage = lazy(() => import("./pages/resumes"));
@@ -181,6 +182,7 @@ function AppRouter() {
       <Route path="/careers" component={() => <PublicRoute component={CareersPage} />} />
       <Route path="/pricing" component={() => <PublicRoute component={PricingPage} />} />
       <Route path="/how-it-works" component={() => <PublicRoute component={HowItWorksPage} />} />
+      <Route path="/features" component={() => <PublicRoute component={FeaturesPage} />} />
       <Route path="/blog" component={() => <PublicRoute component={BlogPage} />} />
       <Route path="/blog/:slug" component={() => <PublicRoute component={BlogPostPage} />} />
       <Route path="/privacy" component={() => <PublicRoute component={PrivacyPolicy} />} />
