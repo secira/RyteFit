@@ -27,10 +27,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // ==================== AUTH ROUTES ====================
 
+  // Signup request — captures details and emails support@rytefit.com for onboarding
   app.post('/api/auth/signup', async (req, res) => {
-    return res.status(403).json({ 
-      message: "This is a B2B platform for Company Admins and Recruiters only. Candidate signup is disabled. Please contact your company administrator for access." 
-    });
+    try {
+      const { firstName, lastName, email, companyName, phone } = req.body;
+
+      if (!firstName || !lastName || !email || !companyName) {
+        return res.status(400).json({ message: "First name, last name, email, and company name are required." });
+      }
+
+      const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+      const emailBody = `
+        <h2>New RyteFit Signup Request</h2>
+        <p>A new user has requested access to the RyteFit platform. Please reach out to them for onboarding.</p>
+        <table style="border-collapse:collapse;width:100%;max-width:500px;">
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;background:#f5f5f5">Name</td><td style="padding:8px;border:1px solid #ddd">${firstName} ${lastName}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;background:#f5f5f5">Email</td><td style="padding:8px;border:1px solid #ddd">${email}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;background:#f5f5f5">Company</td><td style="padding:8px;border:1px solid #ddd">${companyName}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;background:#f5f5f5">Phone</td><td style="padding:8px;border:1px solid #ddd">${phone || 'Not provided'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;background:#f5f5f5">Submitted At</td><td style="padding:8px;border:1px solid #ddd">${submittedAt} IST</td></tr>
+        </table>
+        <p style="margin-top:16px;color:#555">Please create their account and contact them within 1 business day.</p>
+      `;
+
+      if (process.env.RESEND_API_KEY) {
+        const { Resend } = await import('resend');
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        await resend.emails.send({
+          from: process.env.RESEND_FROM_EMAIL || 'noreply@rytefit.com',
+          to: 'support@rytefit.com',
+          subject: `New Signup Request — ${firstName} ${lastName} (${companyName})`,
+          html: emailBody,
+        });
+        console.log(`[SIGNUP-REQUEST] Email sent to support@rytefit.com for ${email}`);
+      } else {
+        console.log('[SIGNUP-REQUEST] Resend not configured. Signup request details:');
+        console.log(`  Name: ${firstName} ${lastName}, Email: ${email}, Company: ${companyName}, Phone: ${phone}`);
+      }
+
+      return res.json({ message: "Request received. Our support team will contact you shortly." });
+    } catch (error) {
+      console.error('[SIGNUP-REQUEST] Error:', error);
+      return res.status(500).json({ message: "Failed to submit request. Please try again." });
+    }
   });
 
   // Email/password login

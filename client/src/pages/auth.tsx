@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Eye, EyeOff, Shield, Briefcase } from "lucide-react";
+import { Eye, EyeOff, Shield, Briefcase, CheckCircle, Mail } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 const loginSchema = z.object({
@@ -18,20 +18,22 @@ const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
-const signupSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+const signupRequestSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
+  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
+  companyName: z.string().min(1, "Company name is required"),
+  phone: z.string().optional(),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
-type SignupForm = z.infer<typeof signupSchema>;
+type SignupRequestForm = z.infer<typeof signupRequestSchema>;
 
 export default function AuthPage() {
   const [, setLocation] = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignupMode, setIsSignupMode] = useState(false);
+  const [requestSubmitted, setRequestSubmitted] = useState(false);
   const { toast } = useToast();
 
   const loginForm = useForm<LoginForm>({
@@ -41,11 +43,11 @@ export default function AuthPage() {
     defaultValues: { email: "", password: "" },
   });
 
-  const signupForm = useForm<SignupForm>({
-    resolver: zodResolver(signupSchema),
+  const signupForm = useForm<SignupRequestForm>({
+    resolver: zodResolver(signupRequestSchema),
     mode: "onBlur",
     reValidateMode: "onChange",
-    defaultValues: { email: "", password: "", firstName: "", lastName: "" },
+    defaultValues: { firstName: "", lastName: "", email: "", companyName: "", phone: "" },
   });
 
   const loginMutation = useMutation({
@@ -67,7 +69,7 @@ export default function AuthPage() {
   });
 
   const signupMutation = useMutation({
-    mutationFn: async (data: SignupForm) => {
+    mutationFn: async (data: SignupRequestForm) => {
       const response = await apiRequest("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,13 +78,10 @@ export default function AuthPage() {
       return response.json();
     },
     onSuccess: () => {
-      toast({ title: "Account created", description: "You can now sign in." });
-      setIsSignupMode(false);
-      loginForm.setValue("email", signupForm.getValues().email);
-      signupForm.reset();
+      setRequestSubmitted(true);
     },
     onError: (error: Error) => {
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
+      toast({ title: "Submission failed", description: error.message, variant: "destructive" });
     },
   });
 
@@ -142,204 +141,286 @@ export default function AuthPage() {
             <span className="text-lg font-bold text-primary">RyteFit</span>
           </div>
 
-          <div className="space-y-1">
-            <h2 className="text-2xl font-bold text-foreground">
-              {isSignupMode ? "Create your account" : "Welcome back"}
-            </h2>
-            <p className="text-muted-foreground text-sm">
-              {isSignupMode
-                ? "Set up your admin account to get started"
-                : "Sign in to your admin dashboard"}
-            </p>
-          </div>
+          {!isSignupMode ? (
+            <>
+              <div className="space-y-1">
+                <h2 className="text-2xl font-bold text-foreground">Welcome back</h2>
+                <p className="text-muted-foreground text-sm">Sign in to your admin dashboard</p>
+              </div>
 
-          <Card className="border border-border shadow-sm">
-            <CardContent className="pt-6">
-              {!isSignupMode ? (
-                <Form {...loginForm}>
-                  <form
-                    onSubmit={loginForm.handleSubmit((data) => loginMutation.mutate(data))}
-                    className="space-y-5"
-                  >
-                    <FormField
-                      control={loginForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email address</FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              type="email"
-                              autoComplete="email"
-                              placeholder="admin@company.com"
-                              data-testid="input-email-login"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={loginForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Password</FormLabel>
-                          <FormControl>
-                            <div className="relative">
+              <Card className="border border-border shadow-sm">
+                <CardContent className="pt-6">
+                  <Form {...loginForm}>
+                    <form
+                      onSubmit={loginForm.handleSubmit((data) => loginMutation.mutate(data))}
+                      className="space-y-5"
+                    >
+                      <FormField
+                        control={loginForm.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email address</FormLabel>
+                            <FormControl>
                               <Input
                                 {...field}
-                                type={showPassword ? "text" : "password"}
-                                autoComplete="current-password"
-                                placeholder="Enter your password"
-                                data-testid="input-password"
+                                type="email"
+                                autoComplete="email"
+                                placeholder="admin@company.com"
+                                data-testid="input-email-login"
                               />
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                                onClick={() => setShowPassword(!showPassword)}
-                                data-testid="button-toggle-password"
-                              >
-                                {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
-                              </Button>
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      disabled={loginMutation.isPending}
-                      data-testid="button-login"
+                      <FormField
+                        control={loginForm.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <Input
+                                  {...field}
+                                  type={showPassword ? "text" : "password"}
+                                  autoComplete="current-password"
+                                  placeholder="Enter your password"
+                                  data-testid="input-password"
+                                />
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                  data-testid="button-toggle-password"
+                                >
+                                  {showPassword
+                                    ? <EyeOff className="h-4 w-4 text-muted-foreground" />
+                                    : <Eye className="h-4 w-4 text-muted-foreground" />}
+                                </Button>
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={loginMutation.isPending}
+                        data-testid="button-login"
+                      >
+                        {loginMutation.isPending ? "Signing in..." : "Sign in"}
+                      </Button>
+                    </form>
+                  </Form>
+
+                  <Separator className="my-5" />
+
+                  <p className="text-center text-sm text-muted-foreground">
+                    New to RyteFit?{" "}
+                    <button
+                      type="button"
+                      className="text-primary font-medium hover:underline"
+                      onClick={() => { setIsSignupMode(true); setRequestSubmitted(false); }}
+                      data-testid="link-request-access"
                     >
-                      {loginMutation.isPending ? "Signing in..." : "Sign in"}
-                    </Button>
-                  </form>
-                </Form>
-              ) : (
-                <Form {...signupForm}>
-                  <form
-                    onSubmit={signupForm.handleSubmit((data) => signupMutation.mutate(data))}
-                    className="space-y-5"
-                  >
-                    <div className="grid grid-cols-2 gap-4">
-                      <FormField
-                        control={signupForm.control}
-                        name="firstName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>First name</FormLabel>
-                            <FormControl>
-                              <Input {...field} autoComplete="given-name" placeholder="John" data-testid="input-firstname" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={signupForm.control}
-                        name="lastName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Last name</FormLabel>
-                            <FormControl>
-                              <Input {...field} autoComplete="family-name" placeholder="Doe" data-testid="input-lastname" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      Request access
+                    </button>
+                  </p>
+                </CardContent>
+              </Card>
+
+              <p className="text-center text-xs text-muted-foreground">
+                Restricted access — Company Admins and Recruiters only
+              </p>
+            </>
+          ) : requestSubmitted ? (
+            /* Success state */
+            <>
+              <div className="space-y-1">
+                <h2 className="text-2xl font-bold text-foreground">Request received!</h2>
+                <p className="text-muted-foreground text-sm">We'll be in touch soon</p>
+              </div>
+
+              <Card className="border border-border shadow-sm">
+                <CardContent className="pt-8 pb-8">
+                  <div className="flex flex-col items-center text-center space-y-5">
+                    <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
                     </div>
-
-                    <FormField
-                      control={signupForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email address</FormLabel>
-                          <FormControl>
-                            <Input {...field} type="email" autoComplete="email" placeholder="admin@company.com" data-testid="input-email-signup" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={signupForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Password</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Input
-                                {...field}
-                                type={showPassword ? "text" : "password"}
-                                autoComplete="new-password"
-                                placeholder="At least 8 characters"
-                                data-testid="input-password-signup"
-                              />
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                                onClick={() => setShowPassword(!showPassword)}
-                                data-testid="button-toggle-password-signup"
-                              >
-                                {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
-                              </Button>
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      disabled={signupMutation.isPending}
-                      data-testid="button-signup"
-                    >
-                      {signupMutation.isPending ? "Creating account..." : "Create account"}
-                    </Button>
-                  </form>
-                </Form>
-              )}
-
-              <Separator className="my-5" />
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-semibold text-foreground">
+                        Thank you for your interest!
+                      </h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
+                        Our support team has received your request and will reach out to you within <span className="font-medium text-foreground">1 business day</span> to set up your account and walk you through the platform.
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 rounded-lg px-4 py-3 w-full">
+                      <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                      <p className="text-sm text-blue-700 dark:text-blue-300">
+                        Check your inbox — we'll contact you at the email you provided.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
               <p className="text-center text-sm text-muted-foreground">
-                {isSignupMode ? "Already have an account?" : "Need an account?"}{" "}
+                Already have an account?{" "}
                 <button
                   type="button"
                   className="text-primary font-medium hover:underline"
-                  onClick={() => {
-                    setIsSignupMode(!isSignupMode);
-                    loginForm.reset();
-                    signupForm.reset();
-                    setShowPassword(false);
-                  }}
-                  data-testid="link-toggle-mode"
+                  onClick={() => { setIsSignupMode(false); setRequestSubmitted(false); }}
+                  data-testid="link-back-to-login"
                 >
-                  {isSignupMode ? "Sign in" : "Create one"}
+                  Sign in
                 </button>
               </p>
-            </CardContent>
-          </Card>
+            </>
+          ) : (
+            /* Signup request form */
+            <>
+              <div className="space-y-1">
+                <h2 className="text-2xl font-bold text-foreground">Request access</h2>
+                <p className="text-muted-foreground text-sm">
+                  RyteFit's support team will set up your account and onboard you personally.
+                </p>
+              </div>
 
-          <p className="text-center text-xs text-muted-foreground">
-            Restricted access — Company Admins and Recruiters only
-          </p>
+              <Card className="border border-border shadow-sm">
+                <CardContent className="pt-6">
+                  <Form {...signupForm}>
+                    <form
+                      onSubmit={signupForm.handleSubmit((data) => signupMutation.mutate(data))}
+                      className="space-y-4"
+                    >
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={signupForm.control}
+                          name="firstName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>First name</FormLabel>
+                              <FormControl>
+                                <Input {...field} placeholder="John" data-testid="input-firstname" />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={signupForm.control}
+                          name="lastName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Last name</FormLabel>
+                              <FormControl>
+                                <Input {...field} placeholder="Doe" data-testid="input-lastname" />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <FormField
+                        control={signupForm.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Work email</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="email"
+                                placeholder="you@company.com"
+                                data-testid="input-email-signup"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={signupForm.control}
+                        name="companyName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Company name</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="Acme Corp"
+                                data-testid="input-company"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={signupForm.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              Phone number{" "}
+                              <span className="text-muted-foreground font-normal">(optional)</span>
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="tel"
+                                placeholder="+91 98765 43210"
+                                data-testid="input-phone"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button
+                        type="submit"
+                        className="w-full mt-2"
+                        disabled={signupMutation.isPending}
+                        data-testid="button-request-access"
+                      >
+                        {signupMutation.isPending ? "Submitting..." : "Submit request"}
+                      </Button>
+                    </form>
+                  </Form>
+
+                  <Separator className="my-5" />
+
+                  <p className="text-center text-sm text-muted-foreground">
+                    Already have an account?{" "}
+                    <button
+                      type="button"
+                      className="text-primary font-medium hover:underline"
+                      onClick={() => { setIsSignupMode(false); signupForm.reset(); }}
+                      data-testid="link-back-to-login"
+                    >
+                      Sign in
+                    </button>
+                  </p>
+                </CardContent>
+              </Card>
+
+              <p className="text-center text-xs text-muted-foreground">
+                Our team typically responds within 1 business day.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>
