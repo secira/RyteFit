@@ -218,7 +218,8 @@ export function AppSidebar() {
     <Sidebar data-testid="sidebar-main">
       <SidebarHeader className="border-b border-sidebar-border p-4">
         <Link href="/dashboard">
-          <div className="flex items-center cursor-pointer">
+          <div className="flex items-center gap-2 cursor-pointer">
+            <img src="/logo.png" alt="RyteFit" className="w-8 h-8 object-contain" />
             <span className="text-xl font-bold text-sidebar-foreground" data-testid="text-sidebar-logo">
               RyteFit
             </span>

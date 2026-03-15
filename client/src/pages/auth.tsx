@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Eye, EyeOff, Shield, Briefcase, CheckCircle, Mail } from "lucide-react";
+import { Eye, EyeOff, Shield, CheckCircle, Mail } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 const loginSchema = z.object({
@@ -90,9 +90,7 @@ export default function AuthPage() {
       {/* Left panel - branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-700 via-blue-800 to-blue-950 flex-col justify-between p-12 text-white">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-            <Briefcase className="w-5 h-5 text-white" />
-          </div>
+          <img src="/logo.png" alt="RyteFit" className="w-10 h-10 object-contain" />
           <span className="text-xl font-bold tracking-tight">RyteFit</span>
         </div>
 
@@ -134,10 +132,8 @@ export default function AuthPage() {
       <div className="flex-1 flex items-center justify-center bg-background p-6">
         <div className="w-full max-w-md space-y-8">
           {/* Mobile logo */}
-          <div className="flex lg:hidden items-center gap-3 mb-2">
-            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center">
-              <Briefcase className="w-4 h-4 text-primary-foreground" />
-            </div>
+          <div className="flex lg:hidden items-center gap-2 mb-2">
+            <img src="/logo.png" alt="RyteFit" className="w-9 h-9 object-contain" />
             <span className="text-lg font-bold text-primary">RyteFit</span>
           </div>
 
