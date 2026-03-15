@@ -330,24 +330,28 @@ export default function AuthPage() {
                         />
                       </div>
 
-                      <FormField
-                        control={signupForm.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Work email</FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                type="email"
-                                placeholder="you@company.com"
-                                data-testid="input-email-signup"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                      <FormItem>
+                        <FormLabel>Work email</FormLabel>
+                        <FormControl>
+                          <Input
+                            id="signup-email"
+                            type="text"
+                            inputMode="email"
+                            autoComplete="off"
+                            placeholder="you@company.com"
+                            value={signupForm.watch("email")}
+                            onChange={(e) =>
+                              signupForm.setValue("email", e.target.value, { shouldValidate: signupForm.formState.isSubmitted })
+                            }
+                            data-testid="input-email-signup"
+                          />
+                        </FormControl>
+                        {signupForm.formState.errors.email && (
+                          <p className="text-sm font-medium text-destructive">
+                            {signupForm.formState.errors.email.message}
+                          </p>
                         )}
-                      />
+                      </FormItem>
 
                       <FormField
                         control={signupForm.control}
