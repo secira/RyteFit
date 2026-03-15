@@ -7,6 +7,7 @@ import pinoHttp from "pino-http";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { setupWebSocketServer } from "./websocket";
+import { ensureDefaultAdmin } from "./defaultAdmin";
 
 const app = express();
 
@@ -135,6 +136,9 @@ app.use((req: any, res, next) => {
 
 (async () => {
   const server = await registerRoutes(app);
+
+  // Ensure the default RyteFit admin always exists
+  await ensureDefaultAdmin();
 
   // Setup WebSocket server for AI video interviews
   setupWebSocketServer(server);
