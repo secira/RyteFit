@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -11,553 +10,337 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { AlertCircle, Phone, Eye, EyeOff } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import Header from "@/components/Header";
+import { Eye, EyeOff, Shield, Briefcase } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
-// Validation schemas
-const emailLoginSchema = z.object({
+const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
 });
 
-const emailSignupSchema = z.object({
+const signupSchema = z.object({
   email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
 });
 
-const mobileSchema = z.object({
-  mobileNumber: z.string().regex(/^\+91[6-9]\d{9}$/, "Please enter a valid Indian mobile number (+91XXXXXXXXXX)"),
-});
-
-const otpSchema = z.object({
-  otp: z.string().length(6, "OTP must be 6 digits"),
-});
-
-type EmailLoginForm = z.infer<typeof emailLoginSchema>;
-type EmailSignupForm = z.infer<typeof emailSignupSchema>;
-type MobileForm = z.infer<typeof mobileSchema>;
-type OtpForm = z.infer<typeof otpSchema>;
+type LoginForm = z.infer<typeof loginSchema>;
+type SignupForm = z.infer<typeof signupSchema>;
 
 export default function AuthPage() {
   const [, setLocation] = useLocation();
   const [showPassword, setShowPassword] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [mobileNumber, setMobileNumber] = useState("");
   const [isSignupMode, setIsSignupMode] = useState(false);
   const { toast } = useToast();
 
-  // Form instances
-  const emailLoginForm = useForm<EmailLoginForm>({
-    resolver: zodResolver(emailLoginSchema),
+  const loginForm = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
     mode: "onBlur",
     reValidateMode: "onChange",
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
-  const emailSignupForm = useForm<EmailSignupForm>({
-    resolver: zodResolver(emailSignupSchema),
+  const signupForm = useForm<SignupForm>({
+    resolver: zodResolver(signupSchema),
     mode: "onBlur",
     reValidateMode: "onChange",
-    defaultValues: {
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-    },
+    defaultValues: { email: "", password: "", firstName: "", lastName: "" },
   });
 
-  const mobileForm = useForm<MobileForm>({
-    resolver: zodResolver(mobileSchema),
-    defaultValues: {
-      mobileNumber: "",
-    },
-  });
-
-  const otpForm = useForm<OtpForm>({
-    resolver: zodResolver(otpSchema),
-    defaultValues: {
-      otp: "",
-    },
-  });
-
-  // Mutations
-  const emailLoginMutation = useMutation({
-    mutationFn: async (data: EmailLoginForm) => {
+  const loginMutation = useMutation({
+    mutationFn: async (data: LoginForm) => {
       const response = await apiRequest("/api/auth/login", {
         method: "POST",
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       return response.json();
     },
     onSuccess: () => {
-      toast({
-        title: "Login successful",
-        description: "Welcome back!",
-      });
+      toast({ title: "Login successful", description: "Welcome back!" });
       setLocation("/dashboard");
     },
     onError: (error: Error) => {
-      toast({
-        title: "Login failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast({ title: "Login failed", description: error.message, variant: "destructive" });
     },
   });
 
-  const emailSignupMutation = useMutation({
-    mutationFn: async (data: EmailSignupForm) => {
+  const signupMutation = useMutation({
+    mutationFn: async (data: SignupForm) => {
       const response = await apiRequest("/api/auth/signup", {
         method: "POST",
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       return response.json();
     },
     onSuccess: () => {
-      toast({
-        title: "Account created successfully",
-        description: "Welcome! You can now sign in.",
-      });
+      toast({ title: "Account created", description: "You can now sign in." });
       setIsSignupMode(false);
-      emailLoginForm.setValue("email", emailSignupForm.getValues().email);
+      loginForm.setValue("email", signupForm.getValues().email);
+      signupForm.reset();
     },
     onError: (error: Error) => {
-      toast({
-        title: "Signup failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
     },
   });
-
-  const sendOtpMutation = useMutation({
-    mutationFn: async (data: MobileForm) => {
-      const response = await apiRequest("/api/auth/send-otp", {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      return response.json();
-    },
-    onSuccess: () => {
-      setOtpSent(true);
-      setMobileNumber(mobileForm.getValues().mobileNumber);
-      toast({
-        title: "OTP sent",
-        description: "Please check your mobile for the verification code",
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Failed to send OTP",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
-  const verifyOtpMutation = useMutation({
-    mutationFn: async (data: OtpForm) => {
-      const response = await apiRequest("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          mobileNumber,
-          otp: data.otp,
-        }),
-      });
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Login successful",
-        description: "Welcome to RyteFit!",
-      });
-      setLocation("/dashboard");
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "OTP verification failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handleEmailLoginSubmit = (data: EmailLoginForm) => {
-    emailLoginMutation.mutate(data);
-  };
-
-  const handleEmailSignupSubmit = (data: EmailSignupForm) => {
-    emailSignupMutation.mutate(data);
-  };
-
-  const handleMobileSubmit = (data: MobileForm) => {
-    sendOtpMutation.mutate(data);
-  };
-
-  const handleOtpSubmit = (data: OtpForm) => {
-    verifyOtpMutation.mutate(data);
-  };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header />
-      <div className="flex-1 bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-blue-950 dark:via-background dark:to-blue-950 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center space-y-2">
-            <CardTitle className="text-2xl font-bold text-primary">
-              RyteFit Platform
-            </CardTitle>
-            <CardDescription>
-              Smart Hiring with AI-Powered Video Interviews
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="mobile" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="mobile" data-testid="tab-mobile">Mobile</TabsTrigger>
-                <TabsTrigger value="email" data-testid="tab-email">Email</TabsTrigger>
-              </TabsList>
+    <div className="min-h-screen flex">
+      {/* Left panel - branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-700 via-blue-800 to-blue-950 flex-col justify-between p-12 text-white">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+            <Briefcase className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-xl font-bold tracking-tight">RyteFit</span>
+        </div>
 
-              {/* Mobile OTP - Sign up or Login */}
-              <TabsContent value="mobile" className="space-y-4">
-                {!otpSent ? (
-                  <div className="space-y-4">
-                    <p className="text-sm text-muted-foreground text-center">
-                      Sign up or sign in with your mobile number
-                    </p>
-                    <Form {...mobileForm}>
-                      <form
-                        onSubmit={mobileForm.handleSubmit(handleMobileSubmit)}
-                        className="space-y-4"
-                      >
-                        <FormField
-                          control={mobileForm.control}
-                          name="mobileNumber"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Mobile Number</FormLabel>
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  type="tel"
-                                  autoComplete="tel"
-                                  placeholder="+91XXXXXXXXXX"
-                                  data-testid="input-mobile"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <Button
-                          type="submit"
-                          className="w-full"
-                          disabled={sendOtpMutation.isPending}
-                          data-testid="button-send-otp"
-                        >
-                          {sendOtpMutation.isPending ? "Sending..." : "Send OTP"}
-                        </Button>
-                      </form>
-                    </Form>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <Alert>
-                      <AlertCircle className="h-4 w-4" />
-                      <AlertDescription>
-                        OTP sent to {mobileNumber}
-                      </AlertDescription>
-                    </Alert>
-                    <form
-                      onSubmit={otpForm.handleSubmit(handleOtpSubmit)}
-                      className="space-y-4"
-                    >
-                      <div className="space-y-2">
-                        <label htmlFor="otp-input" className="text-sm font-medium">
-                          Verification Code
-                        </label>
-                        <Input
-                          id="otp-input"
-                          type="text"
-                          inputMode="numeric"
-                          autoComplete="one-time-code"
-                          pattern="[0-9]*"
-                          placeholder="Enter 6-digit OTP"
-                          maxLength={6}
-                          value={otpForm.watch("otp")}
-                          onChange={(e) => otpForm.setValue("otp", e.target.value)}
-                          data-testid="input-otp"
-                        />
-                        {otpForm.formState.errors.otp && (
-                          <p className="text-sm text-destructive">
-                            {otpForm.formState.errors.otp.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className="flex-1"
-                          onClick={() => {
-                            setOtpSent(false);
-                            otpForm.reset();
-                          }}
-                          data-testid="button-back"
-                        >
-                          Back
-                        </Button>
-                        <Button
-                          type="submit"
-                          className="flex-1"
-                          disabled={verifyOtpMutation.isPending}
-                          data-testid="button-verify-otp"
-                        >
-                          {verifyOtpMutation.isPending ? "Verifying..." : "Verify"}
-                        </Button>
-                      </div>
-                    </form>
-                  </div>
-                )}
-              </TabsContent>
+        <div className="space-y-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-blue-200 text-sm font-medium uppercase tracking-wider">
+              <Shield className="w-4 h-4" />
+              Admin Portal
+            </div>
+            <h1 className="text-4xl font-bold leading-tight">
+              Smarter Hiring,<br />Powered by AI
+            </h1>
+            <p className="text-blue-200 text-lg leading-relaxed">
+              Streamline your recruitment with AI-driven interviews, intelligent screening, and data-backed decisions.
+            </p>
+          </div>
 
-              {/* Email Login/Signup */}
-              <TabsContent value="email" className="space-y-4">
-                <div className="text-center space-y-2">
-                  <p className="text-sm text-muted-foreground">
-                    {isSignupMode ? "Create a new account with email" : "Sign in with your email account"}
-                  </p>
-                </div>
+          <div className="grid grid-cols-2 gap-4 pt-4">
+            {[
+              { label: "Time Saved", value: "70%" },
+              { label: "Faster Screening", value: "3x" },
+              { label: "Accuracy", value: "94%" },
+              { label: "SMBs Served", value: "500+" },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-white/10 rounded-xl p-4">
+                <div className="text-2xl font-bold">{stat.value}</div>
+                <div className="text-blue-200 text-sm">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-                {!isSignupMode ? (
-                  <Form {...emailLoginForm}>
-                    <form
-                      onSubmit={emailLoginForm.handleSubmit(handleEmailLoginSubmit)}
-                      className="space-y-4"
-                    >
-                      <FormField
-                        control={emailLoginForm.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
+        <p className="text-blue-300 text-sm">
+          © {new Date().getFullYear()} RyteFit. Enterprise hiring platform.
+        </p>
+      </div>
+
+      {/* Right panel - form */}
+      <div className="flex-1 flex items-center justify-center bg-background p-6">
+        <div className="w-full max-w-md space-y-8">
+          {/* Mobile logo */}
+          <div className="flex lg:hidden items-center gap-3 mb-2">
+            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center">
+              <Briefcase className="w-4 h-4 text-primary-foreground" />
+            </div>
+            <span className="text-lg font-bold text-primary">RyteFit</span>
+          </div>
+
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold text-foreground">
+              {isSignupMode ? "Create your account" : "Welcome back"}
+            </h2>
+            <p className="text-muted-foreground text-sm">
+              {isSignupMode
+                ? "Set up your admin account to get started"
+                : "Sign in to your admin dashboard"}
+            </p>
+          </div>
+
+          <Card className="border border-border shadow-sm">
+            <CardContent className="pt-6">
+              {!isSignupMode ? (
+                <Form {...loginForm}>
+                  <form
+                    onSubmit={loginForm.handleSubmit((data) => loginMutation.mutate(data))}
+                    className="space-y-5"
+                  >
+                    <FormField
+                      control={loginForm.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email address</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              type="email"
+                              autoComplete="email"
+                              placeholder="admin@company.com"
+                              data-testid="input-email-login"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={loginForm.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl>
+                            <div className="relative">
                               <Input
                                 {...field}
-                                type="email"
-                                autoComplete="email"
-                                placeholder="your@email.com"
-                                data-testid="input-email-login"
+                                type={showPassword ? "text" : "password"}
+                                autoComplete="current-password"
+                                placeholder="Enter your password"
+                                data-testid="input-password"
                               />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                                onClick={() => setShowPassword(!showPassword)}
+                                data-testid="button-toggle-password"
+                              >
+                                {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
+                              </Button>
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                      <FormField
-                        control={emailLoginForm.control}
-                        name="password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                              <div className="relative">
-                                <Input
-                                  {...field}
-                                  type={showPassword ? "text" : "password"}
-                                  autoComplete="current-password"
-                                  placeholder="Enter your password"
-                                  data-testid="input-password"
-                                />
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                  onClick={() => setShowPassword(!showPassword)}
-                                  data-testid="button-toggle-password"
-                                >
-                                  {showPassword ? (
-                                    <EyeOff className="h-4 w-4" />
-                                  ) : (
-                                    <Eye className="h-4 w-4" />
-                                  )}
-                                </Button>
-                              </div>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <Button
-                        type="submit"
-                        className="w-full"
-                        disabled={emailLoginMutation.isPending}
-                        data-testid="button-email-submit"
-                      >
-                        {emailLoginMutation.isPending ? "Please wait..." : "Login"}
-                      </Button>
-
-                      <div className="text-center">
-                        <button
-                          type="button"
-                          className="text-sm text-primary hover:underline"
-                          onClick={() => {
-                            setIsSignupMode(true);
-                            emailLoginForm.reset();
-                          }}
-                          data-testid="link-signup"
-                        >
-                          Don't have an account? Sign up
-                        </button>
-                      </div>
-                    </form>
-                  </Form>
-                ) : (
-                  <Form {...emailSignupForm}>
-                    <form
-                      onSubmit={emailSignupForm.handleSubmit(handleEmailSignupSubmit)}
-                      className="space-y-4"
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={loginMutation.isPending}
+                      data-testid="button-login"
                     >
-                      <div className="grid grid-cols-2 gap-4">
-                        <FormField
-                          control={emailSignupForm.control}
-                          name="firstName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>First Name</FormLabel>
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  type="text"
-                                  autoComplete="given-name"
-                                  placeholder="John"
-                                  data-testid="input-firstname"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={emailSignupForm.control}
-                          name="lastName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Last Name</FormLabel>
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  type="text"
-                                  autoComplete="family-name"
-                                  placeholder="Doe"
-                                  data-testid="input-lastname"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <label htmlFor="email-signup" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                          Email
-                        </label>
-                        <Input
-                          id="email-signup"
-                          type="email"
-                          autoComplete="off"
-                          placeholder="your@email.com"
-                          value={emailSignupForm.watch("email")}
-                          onChange={(e) => emailSignupForm.setValue("email", e.target.value, { shouldValidate: true })}
-                          data-testid="input-email-signup"
-                        />
-                        {emailSignupForm.formState.errors.email && (
-                          <p className="text-sm font-medium text-destructive">
-                            {emailSignupForm.formState.errors.email.message}
-                          </p>
-                        )}
-                      </div>
-
+                      {loginMutation.isPending ? "Signing in..." : "Sign in"}
+                    </Button>
+                  </form>
+                </Form>
+              ) : (
+                <Form {...signupForm}>
+                  <form
+                    onSubmit={signupForm.handleSubmit((data) => signupMutation.mutate(data))}
+                    className="space-y-5"
+                  >
+                    <div className="grid grid-cols-2 gap-4">
                       <FormField
-                        control={emailSignupForm.control}
-                        name="password"
+                        control={signupForm.control}
+                        name="firstName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>First name</FormLabel>
                             <FormControl>
-                              <div className="relative">
-                                <Input
-                                  {...field}
-                                  type={showPassword ? "text" : "password"}
-                                  autoComplete="new-password"
-                                  placeholder="At least 8 characters"
-                                  data-testid="input-password-signup"
-                                />
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                  onClick={() => setShowPassword(!showPassword)}
-                                  data-testid="button-toggle-password-signup"
-                                >
-                                  {showPassword ? (
-                                    <EyeOff className="h-4 w-4" />
-                                  ) : (
-                                    <Eye className="h-4 w-4" />
-                                  )}
-                                </Button>
-                              </div>
+                              <Input {...field} autoComplete="given-name" placeholder="John" data-testid="input-firstname" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
+                      <FormField
+                        control={signupForm.control}
+                        name="lastName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Last name</FormLabel>
+                            <FormControl>
+                              <Input {...field} autoComplete="family-name" placeholder="Doe" data-testid="input-lastname" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-                      <Button
-                        type="submit"
-                        className="w-full"
-                        disabled={emailSignupMutation.isPending}
-                        data-testid="button-email-signup"
-                      >
-                        {emailSignupMutation.isPending ? "Creating account..." : "Create Account"}
-                      </Button>
+                    <FormField
+                      control={signupForm.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email address</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="email" autoComplete="email" placeholder="admin@company.com" data-testid="input-email-signup" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                      <div className="text-center">
-                        <button
-                          type="button"
-                          className="text-sm text-primary hover:underline"
-                          onClick={() => {
-                            setIsSignupMode(false);
-                            emailSignupForm.reset();
-                          }}
-                          data-testid="link-login"
-                        >
-                          Already have an account? Login
-                        </button>
-                      </div>
-                    </form>
-                  </Form>
-                )}
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+                    <FormField
+                      control={signupForm.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Input
+                                {...field}
+                                type={showPassword ? "text" : "password"}
+                                autoComplete="new-password"
+                                placeholder="At least 8 characters"
+                                data-testid="input-password-signup"
+                              />
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                                onClick={() => setShowPassword(!showPassword)}
+                                data-testid="button-toggle-password-signup"
+                              >
+                                {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
+                              </Button>
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={signupMutation.isPending}
+                      data-testid="button-signup"
+                    >
+                      {signupMutation.isPending ? "Creating account..." : "Create account"}
+                    </Button>
+                  </form>
+                </Form>
+              )}
+
+              <Separator className="my-5" />
+
+              <p className="text-center text-sm text-muted-foreground">
+                {isSignupMode ? "Already have an account?" : "Need an account?"}{" "}
+                <button
+                  type="button"
+                  className="text-primary font-medium hover:underline"
+                  onClick={() => {
+                    setIsSignupMode(!isSignupMode);
+                    loginForm.reset();
+                    signupForm.reset();
+                    setShowPassword(false);
+                  }}
+                  data-testid="link-toggle-mode"
+                >
+                  {isSignupMode ? "Sign in" : "Create one"}
+                </button>
+              </p>
+            </CardContent>
+          </Card>
+
+          <p className="text-center text-xs text-muted-foreground">
+            Restricted access — Company Admins and Recruiters only
+          </p>
+        </div>
       </div>
     </div>
   );
