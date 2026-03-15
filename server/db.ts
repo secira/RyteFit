@@ -8,6 +8,11 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-// Disable prefetch as it is not supported for "Transaction" pool mode
-const client = postgres(process.env.DATABASE_URL, { prepare: false });
+// Disable prefetch as it is not supported for "Transaction" pool mode.
+// ssl: rejectUnauthorized false allows Neon's self-signed certificate chain
+// to be accepted in environments like EC2 where the cert chain isn't trusted by default.
+const client = postgres(process.env.DATABASE_URL, {
+  prepare: false,
+  ssl: { rejectUnauthorized: false },
+});
 export const db = drizzle(client, { schema });
