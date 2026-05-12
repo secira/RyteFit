@@ -4452,7 +4452,7 @@ Ensure coverage percentage is at least 60%. If not possible, generate additional
   app.post('/api/public/interview/:token/transcribe', async (req, res) => {
     try {
       const { token } = req.params;
-      const { audio } = req.body; // Base64 encoded audio
+      const { audio, mimeType: clientMime } = req.body; // Base64 encoded audio + optional mimeType
 
       if (!audio) {
         return res.status(400).json({ message: "Audio is required" });
@@ -4471,17 +4471,31 @@ Ensure coverage percentage is at least 60%. If not possible, generate additional
         return res.status(404).json({ message: "Invalid interview link" });
       }
 
-      console.log('[TRANSCRIBE] Processing audio...');
+      // Resolve mime type and extension (iPad/Safari sends mp4, Chrome sends webm)
+      const rawMime = (clientMime || 'audio/webm').toLowerCase();
+      const mimeBase = rawMime.split(';')[0].trim();
+      const extMap: Record<string, string> = {
+        'audio/webm': 'webm',
+        'audio/ogg': 'ogg',
+        'audio/mp4': 'mp4',
+        'audio/mpeg': 'mp3',
+        'audio/mp3': 'mp3',
+        'audio/wav': 'wav',
+        'audio/x-wav': 'wav',
+        'audio/x-m4a': 'm4a',
+        'audio/m4a': 'm4a',
+      };
+      const ext = extMap[mimeBase] || 'webm';
+      const fileMime = extMap[mimeBase] ? mimeBase : 'audio/webm';
+
+      console.log('[TRANSCRIBE] Processing audio (mime:', fileMime, ', ext:', ext, ')');
 
       const { OpenAI } = await import('openai');
       const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-      
-      // Convert base64 to buffer
+
       const audioBuffer = Buffer.from(audio, 'base64');
-      
-      // Create a file-like object for the API
-      const audioBlob = new Blob([audioBuffer], { type: 'audio/webm' });
-      const audioFile = new File([audioBlob], 'audio.webm', { type: 'audio/webm' });
+      const audioBlob = new Blob([audioBuffer], { type: fileMime });
+      const audioFile = new File([audioBlob], `audio.${ext}`, { type: fileMime });
 
       const transcription = await openai.audio.transcriptions.create({
         model: 'whisper-1',
@@ -4491,7 +4505,7 @@ Ensure coverage percentage is at least 60%. If not possible, generate additional
 
       console.log('[TRANSCRIBE] Transcription complete:', transcription.text.substring(0, 100) + '...');
 
-      res.json({ 
+      res.json({
         text: transcription.text,
       });
     } catch (error: any) {

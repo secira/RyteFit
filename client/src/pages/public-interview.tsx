@@ -27,8 +27,35 @@ interface ConceptCoverage {
 
 // Check if browser supports Web Speech API
 const hasSpeechRecognition = () => {
-  return !!(typeof window !== 'undefined' && 
+  return !!(typeof window !== 'undefined' &&
     ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition));
+};
+
+// Detect iOS / iPadOS (Safari has no usable Web Speech API)
+const isIOS = () => {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent;
+  return /iPad|iPhone|iPod/.test(ua) ||
+    (ua.includes('Mac') && 'ontouchend' in document); // iPadOS 13+ reports as Mac
+};
+
+// Pick a MediaRecorder mime type the current browser actually supports
+const pickAudioMimeType = (): string => {
+  if (typeof MediaRecorder === 'undefined') return '';
+  const candidates = [
+    'audio/webm;codecs=opus',
+    'audio/webm',
+    'audio/ogg;codecs=opus',
+    'audio/mp4',
+    'audio/mp4;codecs=mp4a.40.2',
+    'audio/aac',
+  ];
+  for (const t of candidates) {
+    try {
+      if ((MediaRecorder as any).isTypeSupported?.(t)) return t;
+    } catch {}
+  }
+  return '';
 };
 
 export default function PublicInterview() {
@@ -46,8 +73,14 @@ export default function PublicInterview() {
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [recordedChunks, setRecordedChunks] = useState<BlobPart[]>([]);
   const [questionAnswered, setQuestionAnswered] = useState<boolean[]>([]);
-  const [useTextFallback, setUseTextFallback] = useState(!hasSpeechRecognition());
+  // On iOS Safari (no SpeechRecognition) we use a record-then-transcribe flow,
+  // so we keep voice enabled there too. Only fall back to text-only if MediaRecorder
+  // is also unavailable.
+  const supportsVoice = hasSpeechRecognition() || (typeof window !== 'undefined' && typeof MediaRecorder !== 'undefined');
+  const [useTextFallback, setUseTextFallback] = useState(!supportsVoice);
   const [textAnswer, setTextAnswer] = useState("");
+  const [isIosRecording, setIsIosRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
   
   // Maximum interview duration: 60 minutes (3600 seconds)
   const MAX_INTERVIEW_TIME = 3600;
@@ -319,6 +352,94 @@ export default function PublicInterview() {
       description: "Speak your answer clearly.",
     });
   }, [toast, isListening]);
+
+  // iOS / Safari voice path: record audio with MediaRecorder, then send to /transcribe
+  const startIOSRecording = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mimeType = pickAudioMimeType();
+      const recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+      audioChunksRef.current = [];
+
+      recorder.ondataavailable = (e: BlobEvent) => {
+        if (e.data && e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
+
+      recorder.onstop = async () => {
+        try {
+          stream.getTracks().forEach((t) => t.stop());
+          const blob = new Blob(audioChunksRef.current, { type: mimeType || 'audio/webm' });
+          if (blob.size === 0) {
+            toast({ title: "No audio captured", description: "Please try recording again.", variant: "destructive" });
+            return;
+          }
+          setIsTranscribing(true);
+
+          // Convert blob to base64
+          const arrayBuf = await blob.arrayBuffer();
+          let binary = '';
+          const bytes = new Uint8Array(arrayBuf);
+          const chunkSize = 0x8000;
+          for (let i = 0; i < bytes.length; i += chunkSize) {
+            binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + chunkSize)) as any);
+          }
+          const base64 = btoa(binary);
+
+          const res = await fetch(`/api/public/interview/${token}/transcribe`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ audio: base64, mimeType: mimeType || 'audio/webm' }),
+          });
+
+          if (!res.ok) {
+            const errText = await res.text();
+            throw new Error(errText || 'Transcription failed');
+          }
+          const data = await res.json();
+          const text: string = (data.text || '').trim();
+          if (text) {
+            setTextAnswer((prev) => (prev ? prev + ' ' + text : text));
+          } else {
+            toast({ title: "Couldn't hear that", description: "Please speak louder or try again.", variant: "destructive" });
+          }
+        } catch (err: any) {
+          console.error('[IOS-RECORD] Transcription error:', err);
+          toast({
+            title: "Transcription Failed",
+            description: err?.message || "Could not transcribe audio. You can also type your answer.",
+            variant: "destructive",
+          });
+        } finally {
+          setIsTranscribing(false);
+        }
+      };
+
+      audioRecorderRef.current = recorder;
+      recorder.start();
+      setIsIosRecording(true);
+      toast({ title: "Recording...", description: "Speak now. Tap the mic again to stop." });
+    } catch (err: any) {
+      console.error('[IOS-RECORD] getUserMedia error:', err);
+      let msg = "Could not access microphone.";
+      if (err?.name === 'NotAllowedError') {
+        msg = "Microphone access blocked. Tap 'AA' in Safari → Website Settings → Microphone → Allow, then reload.";
+      } else if (err?.name === 'NotFoundError') {
+        msg = "No microphone found on this device.";
+      } else if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+        msg = "Microphone requires a secure (HTTPS) connection.";
+      }
+      toast({ title: "Microphone Error", description: msg, variant: "destructive" });
+    }
+  }, [token, toast]);
+
+  const stopIOSRecording = useCallback(() => {
+    try {
+      if (audioRecorderRef.current && audioRecorderRef.current.state !== 'inactive') {
+        audioRecorderRef.current.stop();
+      }
+    } catch {}
+    setIsIosRecording(false);
+  }, []);
 
   // Stop voice recognition
   const stopListening = useCallback(() => {
@@ -995,10 +1116,10 @@ export default function PublicInterview() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-2 flex-wrap">
                       <label className="text-sm font-medium">
-                        Your Answer {!useTextFallback && hasSpeechRecognition() && "(Voice + Text)"}
+                        Your Answer {!useTextFallback && supportsVoice && "(Voice + Text)"}
                       </label>
                       <div className="flex items-center gap-2">
-                        {hasSpeechRecognition() && (
+                        {supportsVoice && (
                           <Button
                             size="sm"
                             variant={useTextFallback ? "outline" : "secondary"}
@@ -1032,7 +1153,17 @@ export default function PublicInterview() {
                     </div>
                     
                     {/* Browser compatibility warning */}
-                    {!hasSpeechRecognition() && (
+                    {!hasSpeechRecognition() && supportsVoice && (
+                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
+                        <p className="text-sm text-blue-700 dark:text-blue-400 flex items-center gap-2">
+                          <Mic className="h-4 w-4 shrink-0" />
+                          {isIOS()
+                            ? "iPad/iPhone voice mode: tap the mic to record, tap again to stop. Your speech will be transcribed automatically."
+                            : "This browser uses record-and-transcribe voice mode. Tap the mic to record, tap again to stop."}
+                        </p>
+                      </div>
+                    )}
+                    {!supportsVoice && (
                       <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
                         <p className="text-sm text-amber-700 dark:text-amber-400 flex items-center gap-2">
                           <AlertTriangle className="h-4 w-4" />
@@ -1054,16 +1185,22 @@ export default function PublicInterview() {
                         data-testid="input-text-answer"
                       />
                       {/* Voice mic button inside textarea area */}
-                      {!useTextFallback && hasSpeechRecognition() && (
+                      {!useTextFallback && supportsVoice && (
                         <Button
                           size="icon"
-                          variant={isListening ? "destructive" : "outline"}
+                          variant={(isListening || isIosRecording) ? "destructive" : "outline"}
                           className="absolute right-2 top-2"
-                          onClick={isListening ? stopListening : startListening}
-                          disabled={isPlayingTTS}
+                          onClick={() => {
+                            if (hasSpeechRecognition()) {
+                              isListening ? stopListening() : startListening();
+                            } else {
+                              isIosRecording ? stopIOSRecording() : startIOSRecording();
+                            }
+                          }}
+                          disabled={isPlayingTTS || isTranscribing}
                           data-testid="button-voice-mic"
                         >
-                          {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                          {(isListening || isIosRecording) ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
                         </Button>
                       )}
                     </div>
@@ -1073,6 +1210,18 @@ export default function PublicInterview() {
                       <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
                         <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
                         <span className="text-sm font-medium">Listening... speak now. Click the mic to stop.</span>
+                      </div>
+                    )}
+                    {isIosRecording && (
+                      <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
+                        <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                        <span className="text-sm font-medium">Recording... tap the mic again to stop.</span>
+                      </div>
+                    )}
+                    {isTranscribing && (
+                      <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                        <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+                        <span className="text-sm font-medium">Transcribing your answer...</span>
                       </div>
                     )}
                     
