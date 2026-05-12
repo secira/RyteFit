@@ -490,6 +490,36 @@ export default function AIInterview() {
     };
   }, []);
 
+  // Block browser back button + tab close while interview is active
+  useEffect(() => {
+    if (!isRecording) return;
+
+    window.history.pushState({ interviewLock: true }, '', window.location.href);
+
+    const onPopState = () => {
+      window.history.pushState({ interviewLock: true }, '', window.location.href);
+      toast({
+        title: "Interview In Progress",
+        description: "The back button is disabled during the interview. Use the Stop Test button to exit.",
+        variant: "destructive",
+      });
+    };
+
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "Your interview is in progress. Are you sure you want to leave?";
+      return e.returnValue;
+    };
+
+    window.addEventListener('popstate', onPopState);
+    window.addEventListener('beforeunload', onBeforeUnload);
+
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+      window.removeEventListener('beforeunload', onBeforeUnload);
+    };
+  }, [isRecording, toast]);
+
   if (!user) {
     return (
       <div className="container mx-auto p-6">

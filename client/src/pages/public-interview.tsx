@@ -274,13 +274,29 @@ export default function PublicInterview() {
 
     recognition.onerror = (event: any) => {
       console.error('Speech recognition error:', event.error);
-      if (event.error !== 'no-speech') {
-        toast({
-          title: "Voice Recognition Error",
-          description: "Please try speaking again.",
-          variant: "destructive",
-        });
+
+      // Silently ignore transient errors that auto-recover
+      if (event.error === 'no-speech' || event.error === 'aborted') return;
+
+      let title = "Voice Recognition Error";
+      let description = "Please try speaking again.";
+
+      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+        title = "Microphone Access Blocked";
+        description = "Please allow microphone access in your browser settings and reload the page. Voice input requires a secure (HTTPS) connection.";
+      } else if (event.error === 'network') {
+        title = "Network Error";
+        description = "Voice recognition needs an HTTPS connection and internet access. Try using the text answer option below.";
+      } else if (event.error === 'audio-capture') {
+        title = "No Microphone Detected";
+        description = "Please check that your microphone is connected and not used by another app.";
       }
+
+      toast({ title, description, variant: "destructive" });
+
+      // Stop trying to auto-restart on fatal errors so we don't spam the user
+      setIsListening(false);
+      try { recognitionRef.current?.stop(); } catch {}
     };
 
     recognition.onend = () => {
@@ -372,6 +388,38 @@ export default function PublicInterview() {
       });
     }
   }, [mediaStream, interviewStarted, questions.length]);
+
+  // Block browser back button + tab close while interview is in progress
+  useEffect(() => {
+    if (!interviewStarted) return;
+
+    // Push a sentinel state so the next "back" pops back to us
+    window.history.pushState({ interviewLock: true }, '', window.location.href);
+
+    const onPopState = () => {
+      // Re-push to keep user on this page
+      window.history.pushState({ interviewLock: true }, '', window.location.href);
+      toast({
+        title: "Interview In Progress",
+        description: "The back button is disabled during the interview. Use the Stop Test button to exit.",
+        variant: "destructive",
+      });
+    };
+
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "Your interview is in progress. Are you sure you want to leave?";
+      return e.returnValue;
+    };
+
+    window.addEventListener('popstate', onPopState);
+    window.addEventListener('beforeunload', onBeforeUnload);
+
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+      window.removeEventListener('beforeunload', onBeforeUnload);
+    };
+  }, [interviewStarted, toast]);
 
   // Overall interview timer - 60 minutes maximum
   useEffect(() => {

@@ -4640,11 +4640,11 @@ Ensure coverage percentage is at least 60%. If not possible, generate additional
           console.log('[INTERVIEW-EVAL-BACKGROUND] Starting AI evaluation...');
           
           const jobTitle = job?.title || 'Position';
-          let totalScore = 50;
-          let technicalScore = 50;
-          let communicationScore = 50;
-          let problemSolvingScore = 50;
-          let confidenceScore = 50;
+          let totalScore = 0;
+          let technicalScore = 0;
+          let communicationScore = 0;
+          let problemSolvingScore = 0;
+          let confidenceScore = 0;
           const questionScores: { questionId: string; question: string; answer: string; score: number; feedback: string; }[] = [];
           const strengths: string[] = [];
           const weaknesses: string[] = [];
@@ -4659,11 +4659,22 @@ Ensure coverage percentage is at least 60%. If not possible, generate additional
             }).join('\n\n');
             
             try {
-              const evaluationPrompt = `You are an expert interview evaluator. Evaluate this candidate's interview for a ${jobTitle} position.
+              const evaluationPrompt = `You are a strict, expert interview evaluator. Evaluate this candidate's interview for a ${jobTitle} position.
 
 ${qaContent}
 
-Provide a comprehensive evaluation in the following JSON format:
+CRITICAL SCORING RULES — apply these strictly:
+- Empty answer, no answer, "I don't know", or single-word/gibberish answer → score 0 for that question
+- Off-topic, irrelevant, or completely incorrect answer → score 0-15 for that question
+- Vague answer with no real substance → score 15-30
+- Partial answer with some relevant content → score 30-55
+- Solid answer covering most key points → score 55-75
+- Strong, complete, well-articulated answer → score 75-90
+- Exceptional, expert-level answer → score 90-100
+- Overall and dimension scores must be honest averages of the question scores. Do NOT inflate or give pity points.
+- If the candidate answered fewer than half the questions meaningfully, the overall score must reflect that (typically below 30).
+
+Return strictly valid JSON in this format:
 {
   "overallScore": <0-100 overall interview score>,
   "technicalScore": <0-100 technical competency score>,
@@ -4673,13 +4684,10 @@ Provide a comprehensive evaluation in the following JSON format:
   "strengths": ["strength1", "strength2", "strength3"],
   "weaknesses": ["weakness1", "weakness2"],
   "questionScores": [
-    {"questionId": "q1", "score": <0-100>, "feedback": "brief feedback"},
-    ...for each question
+    {"questionId": "q1", "score": <0-100>, "feedback": "brief feedback"}
   ],
   "summary": "Brief 2-3 sentence summary of candidate performance"
-}
-
-Score objectively based on answer quality, relevance, depth, and communication. Be fair but thorough.`;
+}`;
 
               const completion = await openai.chat.completions.create({
                 model: 'gpt-4o',
@@ -4692,26 +4700,34 @@ Score objectively based on answer quality, relevance, depth, and communication. 
               });
 
               const evalResult = JSON.parse(completion.choices[0].message.content || '{}');
-              
-              totalScore = evalResult.overallScore || 50;
-              technicalScore = evalResult.technicalScore || 50;
-              communicationScore = evalResult.communicationScore || 50;
-              problemSolvingScore = evalResult.problemSolvingScore || 50;
-              confidenceScore = evalResult.confidenceScore || 50;
-              
+
+              const clamp = (n: any) => {
+                const v = Number(n);
+                return Number.isFinite(v) ? Math.min(100, Math.max(0, Math.round(v))) : 0;
+              };
+
+              totalScore = clamp(evalResult.overallScore);
+              technicalScore = clamp(evalResult.technicalScore);
+              communicationScore = clamp(evalResult.communicationScore);
+              problemSolvingScore = clamp(evalResult.problemSolvingScore);
+              confidenceScore = clamp(evalResult.confidenceScore);
+
               if (evalResult.strengths) strengths.push(...evalResult.strengths);
               if (evalResult.weaknesses) weaknesses.push(...evalResult.weaknesses);
-              
+
               if (evalResult.questionScores) {
                 evalResult.questionScores.forEach((qs: any, i: number) => {
                   const qa = qaPairs[i];
                   if (qa) {
+                    // Force a 0 score for empty / trivially short answers
+                    const answerText = (qa.answer || '').trim();
+                    const isEmpty = answerText.length < 3;
                     questionScores.push({
                       questionId: `q${i + 1}`,
                       question: qa.question,
                       answer: qa.answer,
-                      score: qs.score || 50,
-                      feedback: qs.feedback || 'Evaluated',
+                      score: isEmpty ? 0 : clamp(qs.score),
+                      feedback: qs.feedback || (isEmpty ? 'No answer provided' : 'Evaluated'),
                     });
                   }
                 });
