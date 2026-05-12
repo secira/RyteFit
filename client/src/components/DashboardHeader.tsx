@@ -22,12 +22,12 @@ export function DashboardHeader() {
   const showCompanyName = user && isCompanyUser && company;
 
   return (
-    <header className="flex items-center justify-between gap-4 p-2 border-b">
+    <header className="flex items-center justify-between gap-2 p-2 border-b sticky top-0 z-30 bg-background">
       <SidebarTrigger data-testid="button-sidebar-toggle" />
       {showCompanyName && (
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted/50">
-          <Building2 className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm font-medium">{company.name}</span>
+        <div className="flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-md bg-muted/50 min-w-0">
+          <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
+          <span className="text-xs sm:text-sm font-medium truncate max-w-[55vw] sm:max-w-none">{company.name}</span>
         </div>
       )}
     </header>

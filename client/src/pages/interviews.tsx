@@ -265,7 +265,7 @@ function EvaluatedInterviewCard({ interview }: { interview: any }) {
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          <div className="grid grid-cols-3 gap-3 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
             <div className="bg-muted/50 p-2 rounded-md">
               <div className="text-xs text-muted-foreground">Technical</div>
               <div className="font-semibold">85/100</div>

@@ -847,7 +847,7 @@ export default function CandidateRanking() {
           </DialogHeader>
           <div className="space-y-6 py-4">
             {/* Summary Stats */}
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded-lg">
                 <p className="text-xs text-muted-foreground font-medium">Total Asked</p>
                 <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">4</p>

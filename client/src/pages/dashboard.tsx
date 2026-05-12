@@ -71,23 +71,23 @@ export default function Dashboard() {
   const rejected = applications.filter(a => a.status === 'rejected').length;
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
+    <div className="container mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold" data-testid="heading-dashboard">
+          <h1 className="text-2xl sm:text-3xl font-bold" data-testid="heading-dashboard">
             Dashboard
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-muted-foreground mt-1 text-sm sm:text-base">
             Overview of your recruitment pipeline
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Badge variant="outline" data-testid="badge-user-role">
             {userRole === 'company_admin' ? 'Company Admin' : 'Recruiter'}
           </Badge>
           <Link href="/jobs/new">
-            <Button data-testid="button-create-job">
+            <Button data-testid="button-create-job" size="sm" className="sm:h-10 sm:px-4 sm:text-sm">
               <Briefcase className="h-4 w-4 mr-2" />
               Post New Job
             </Button>
@@ -109,7 +109,7 @@ export default function Dashboard() {
             {jobsLoading ? (
               <Skeleton className="h-12 w-16" />
             ) : (
-              <div className="text-4xl font-bold" data-testid="metric-total-jobs">
+              <div className="text-3xl sm:text-4xl font-bold" data-testid="metric-total-jobs">
                 {totalJobs}
               </div>
             )}
@@ -129,7 +129,7 @@ export default function Dashboard() {
             {jobsLoading ? (
               <Skeleton className="h-12 w-16" />
             ) : (
-              <div className="text-4xl font-bold" data-testid="metric-published-jobs">
+              <div className="text-3xl sm:text-4xl font-bold" data-testid="metric-published-jobs">
                 {publishedJobs}
               </div>
             )}
@@ -149,7 +149,7 @@ export default function Dashboard() {
             {applicationsLoading ? (
               <Skeleton className="h-12 w-16" />
             ) : (
-              <div className="text-4xl font-bold" data-testid="metric-total-applications">
+              <div className="text-3xl sm:text-4xl font-bold" data-testid="metric-total-applications">
                 {totalApplications}
               </div>
             )}
@@ -169,7 +169,7 @@ export default function Dashboard() {
             {applicationsLoading ? (
               <Skeleton className="h-12 w-16" />
             ) : (
-              <div className="text-4xl font-bold" data-testid="metric-interviews">
+              <div className="text-3xl sm:text-4xl font-bold" data-testid="metric-interviews">
                 {interviewCompleted}
               </div>
             )}

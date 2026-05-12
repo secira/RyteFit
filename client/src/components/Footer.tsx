@@ -230,20 +230,18 @@ export default function Footer() {
         <Separator className="my-8" />
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
           <div className="text-sm text-muted-foreground">
             © {currentYear} RyteFit. All rights reserved.
           </div>
-          
-          <div className="flex items-center space-x-6 text-sm">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-1">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-muted-foreground">99.9% Uptime</span>
-              </div>
-              <div className="text-muted-foreground">|</div>
-              <div className="text-muted-foreground">50+ Companies Trust Us</div>
+
+          <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-sm">
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-muted-foreground">99.9% Uptime</span>
             </div>
+            <div className="text-muted-foreground hidden sm:block">|</div>
+            <div className="text-muted-foreground">50+ Companies Trust Us</div>
           </div>
         </div>
 
