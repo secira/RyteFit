@@ -2814,17 +2814,37 @@ Return ONLY a valid JSON object with the following structure:
 
       await storage.updateApplication(id, updates);
 
-      // Create selection decision record for rejection
-      await storage.createSelectionDecision({
-        applicationId: id,
-        jobId: application.jobId,
-        candidateId: application.candidateId,
-        decision: 'rejected',
-        stage: 'screening',
-        decisionMadeBy: recruiterId,
-        decisionDate: new Date(),
-        reason: rejectionReason || null,
-      });
+      // Upsert selection decision (avoid unique-constraint violation if one already exists for this stage/round)
+      const existingDecisions = await db
+        .select()
+        .from(selectionDecisions)
+        .where(and(
+          eq(selectionDecisions.applicationId, id),
+          eq(selectionDecisions.stage, 'screening'),
+        ));
+
+      if (existingDecisions.length > 0) {
+        await db.update(selectionDecisions)
+          .set({
+            decision: 'rejected',
+            decisionMadeBy: recruiterId,
+            decisionDate: new Date(),
+            reason: rejectionReason || null,
+            updatedAt: new Date(),
+          })
+          .where(eq(selectionDecisions.id, existingDecisions[0].id));
+      } else {
+        await storage.createSelectionDecision({
+          applicationId: id,
+          jobId: application.jobId,
+          candidateId: application.candidateId,
+          decision: 'rejected',
+          stage: 'screening',
+          decisionMadeBy: recruiterId,
+          decisionDate: new Date(),
+          reason: rejectionReason || null,
+        });
+      }
 
       res.json({
         message: "Candidate rejected",
