@@ -3,8 +3,8 @@ import { users, companies } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
 
-const DEFAULT_ADMIN_EMAIL = "admin@rytefit.com";
-const DEFAULT_ADMIN_PASSWORD = "rf2020@@";
+const DEFAULT_ADMIN_EMAIL = process.env.DEFAULT_ADMIN_EMAIL || "admin@rytefit.com";
+const DEFAULT_ADMIN_PASSWORD = process.env.DEFAULT_ADMIN_PASSWORD || "rf2020@@";
 
 /**
  * Ensures the default RyteFit admin account always exists.
